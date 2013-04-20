@@ -24,8 +24,10 @@ public class View extends JPanel {
 	JButton rebel = new JButton();
 	JButton galactic = new JButton();
 	JButton place = new JButton ("Place");
-	String[] isVT = { "Vertical", "Horizontal" };
+	String[] isVT = {"Vertical", "Horizontal"};
 	JComboBox selectHZ = new JComboBox(isVT);
+	String[] difficulty = {"Easy", "Medium", "Hard"};
+	JComboBox selectDiff = new JComboBox(difficulty);
 	Ship[] rebelShips = new Ship[5];
 	Ship[] galacticShips = new Ship[5];
 	Ship[] userShips;
@@ -146,6 +148,9 @@ public class View extends JPanel {
 		galactic.setIcon(galacticButton);
 		galactic.addActionListener(new SplashClickHandler());
 		splash.add(galactic);
+		selectDiff.setLocation(500, 480);
+		selectDiff.setSize(120, 30);
+		splash.add(selectDiff);
 	}
 	
 	public void paintComponent(Graphics g) {
