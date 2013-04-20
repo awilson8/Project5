@@ -32,7 +32,11 @@ public class View extends JPanel {
 	private ImageIcon sithInfiltratorBig = new ImageIcon("SithInfiltratorBig.png");
 	private ImageIcon tieFighterBig = new ImageIcon("TieFighterBig.png");
 	private ImageIcon tieBomberBig = new ImageIcon("TieBomberBig.png");
-	//private ImageIcon starCruiser = new ImageIcon("StarCruiserBig.png");
+	private ImageIcon starCruiser = new ImageIcon("StarCruiserBig.png");
+	private ImageIcon attackCruiser = new ImageIcon("AttackCruiserBig.png");
+	//private ImageIcon starFighter = new ImageIcon("StarFighterBig.png");
+	//private ImageIcon xWing = new ImageIcon("XWingBig.png");
+	//private ImageIcon millFalcon = new ImageIcon("MillFalconBig.png");
 	private ImageIcon rebelButton = new ImageIcon("RebelAlliance.png");
 	private ImageIcon galacticButton = new ImageIcon("GalacticEmpire.png");
 
@@ -156,7 +160,7 @@ public class View extends JPanel {
 		frame.setContentPane(splash);
 	    frame.setSize(1125, 750);
 	    frame.setVisible(true);
-	    //frame.setLocationRelativeTo(null);
+	    frame.setLocationRelativeTo(null);
 	}
 	
 	/**
