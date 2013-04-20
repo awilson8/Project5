@@ -10,6 +10,7 @@ import javax.swing.*;
 */
 public class View extends JPanel {
 	int count = 0;
+	private final int ARRAY_MAX_SIZE = 4;
 	Splash splash = new Splash();
 	JFrame frame = new JFrame("Drew Wilson - Project 5");
 	Image background;
@@ -18,6 +19,7 @@ public class View extends JPanel {
 	JTextField placeA = new JTextField("Ex: A");
 	JTextField place1 = new JTextField("Ex: 1");
 	JTextField location = new JTextField("Ex: A 1");
+	private JTextArea messageCenter = new JTextArea("");
 	JButton fire = new JButton ("FIRE!");
 	JButton rebel = new JButton();
 	JButton galactic = new JButton();
@@ -82,31 +84,31 @@ public class View extends JPanel {
 		place.setLocation(605,265);
 		add(place);
 		place.addActionListener(new PlaceClickHandler());
-		//galacticShips[0] = new Ship("Death Star", 4, 72, 72, 200, 200, deathStarBig);
-		//galacticShips[0].setBorderPainted(false);
-		//galacticShips[0].setSize(200,200);
-		//galacticShips[0].setLocation(775,125);
-		//add(galacticShips[0]);
-		//galacticShips[1] = new Ship("Star Destroyer", 4, 50, 120, 310, 185, starDestroyerBig);
-		//galacticShips[1].setBorderPainted(false);
-		//galacticShips[1].setSize(310,185);
-		//galacticShips[1].setLocation(775,125);
-		//add(galacticShips[1]);
-		//galacticShips[2] = new Ship("Sith Infiltrator", 4, 60, 120, 285, 181, sithInfiltratorBig);
-		//galacticShips[2].setBorderPainted(false);
-		//galacticShips[2].setSize(285,181);
-		//galacticShips[2].setLocation(775,125);
-		//add(galacticShips[2]);
-		//galacticShips[3] = new Ship("Tie Fighter", 2, 80, 35, 211, 180, tieFighterBig);
-		//galacticShips[3].setBorderPainted(false);
-		//galacticShips[3].setSize(211,180);
-		//galacticShips[3].setLocation(775,125);
-		//add(galacticShips[3]);
+		messageCenter.setSize(300,190);
+		messageCenter.setLocation(675,130);
+		messageCenter.setEditable(false);
+		messageCenter.setLineWrap(true);
+		messageCenter.setWrapStyleWord(true);
+		galacticShips[0] = new Ship("Death Star", 4, 72, 72, 200, 200, deathStarBig);
+		galacticShips[0].setBorderPainted(false);
+		galacticShips[0].setSize(200,200);
+		galacticShips[0].setLocation(800,125);
+		galacticShips[1] = new Ship("Star Destroyer", 4, 50, 120, 310, 185, starDestroyerBig);
+		galacticShips[1].setBorderPainted(false);
+		galacticShips[1].setSize(310,185);
+		galacticShips[1].setLocation(725,125);
+		galacticShips[2] = new Ship("Sith Infiltrator", 4, 60, 120, 285, 181, sithInfiltratorBig);
+		galacticShips[2].setBorderPainted(false);
+		galacticShips[2].setSize(285,181);
+		galacticShips[2].setLocation(775,125);
+		galacticShips[3] = new Ship("Tie Fighter", 2, 80, 35, 211, 180, tieFighterBig);
+		galacticShips[3].setBorderPainted(false);
+		galacticShips[3].setSize(211,180);
+		galacticShips[3].setLocation(800,125);
 		galacticShips[4] = new Ship("Tie Bomber", 2, 75, 30, 320, 200, tieBomberBig);
 		galacticShips[4].setBorderPainted(false);
 		galacticShips[4].setSize(320,200);
 		galacticShips[4].setLocation(750,125);
-		add(galacticShips[4]);
 		//rebelShips[0] = new Ship("Death Star", 4, 72, 72, 200, 200, deathStarBig);
 		//rebelShips[0].setBorderPainted(false);
 		//rebelShips[0].setSize(200,200);
@@ -164,6 +166,36 @@ public class View extends JPanel {
 	}
 	
 	/**
+	 * SplashClickHandler provides the action listener for the splash screen
+	 */
+	private class SplashClickHandler implements ActionListener{
+
+		/**
+		 * This method handles the tasks of setting the ship
+		 *
+		 * @param e the action event handled by this method
+		 */
+		
+		public void actionPerformed(ActionEvent e){	
+			if (e.getSource() == rebel) {
+				userShips = rebelShips;
+			}
+			else if (e.getSource() == galactic) {
+				userShips = galacticShips;
+
+			}
+			
+			changeScreen();
+			add(userShips[count]);
+			shipName.setText(userShips[count].name);
+		}
+	}
+	
+	public void changeScreen() {
+		frame.setContentPane(this);
+	}
+	
+	/**
 	 * PlaceClickHandler provides the action listener for the go button
 	 */
 	private class PlaceClickHandler implements ActionListener{
@@ -185,10 +217,22 @@ public class View extends JPanel {
 			userShips[count].letter = letter;
 			userShips[count].number = number;
 			userShips[count].isVertical = isVertical;
-			//add(userShips[count]);
+			remove(userShips[count]);
 			count++;
-			if (count == 4) {
-				place.setEnabled(false);
+			if (count <= ARRAY_MAX_SIZE) {
+				add(userShips[count]);
+				shipName.setText(userShips[count].name);
+				repaint();
+			}
+			else {
+				remove(userShips[count-1]);
+				remove(place);
+				remove(placeA);
+				remove(place1);
+				remove(selectHZ);
+				remove(shipName);
+				add(messageCenter);
+				repaint();
 			}
 		}
 	}
@@ -206,33 +250,5 @@ public class View extends JPanel {
 		
 		public void actionPerformed(ActionEvent e){	
 		}
-	}
-	
-	/**
-	 * SplashClickHandler provides the action listener for the splash screen
-	 */
-	private class SplashClickHandler implements ActionListener{
-
-		/**
-		 * This method handles the tasks of setting the ship
-		 *
-		 * @param e the action event handled by this method
-		 */
-		
-		public void actionPerformed(ActionEvent e){	
-			if (e.getSource() == rebel) {
-				userShips = rebelShips;
-			}
-			else if (e.getSource() == galactic) {
-				userShips = galacticShips;
-
-			}
-			
-			changeScreen();
-		}
-	}
-	
-	public void changeScreen() {
-		frame.setContentPane(this);
 	}
 }
