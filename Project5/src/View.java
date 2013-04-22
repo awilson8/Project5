@@ -31,16 +31,17 @@ public class View extends JPanel {
 	Ship[] rebelShips = new Ship[5];
 	Ship[] galacticShips = new Ship[5];
 	Ship[] userShips;
+	JButton testButton = new JButton();
 	private ImageIcon deathStarBig = new ImageIcon("DeathStarBig.png");
 	private ImageIcon starDestroyerBig = new ImageIcon("ImperialStarDestroyerBig.png");
 	private ImageIcon sithInfiltratorBig = new ImageIcon("SithInfiltratorBig.png");
 	private ImageIcon tieFighterBig = new ImageIcon("TieFighterBig.png");
 	private ImageIcon tieBomberBig = new ImageIcon("TieBomberBig.png");
-	private ImageIcon starCruiser = new ImageIcon("StarCruiserBig.png");
-	private ImageIcon attackCruiser = new ImageIcon("AttackCruiserBig.png");
-	//private ImageIcon starFighter = new ImageIcon("StarFighterBig.png");
-	//private ImageIcon xWing = new ImageIcon("XWingBig.png");
-	//private ImageIcon millFalcon = new ImageIcon("MillFalconBig.png");
+	private ImageIcon starCruiserBig = new ImageIcon("StarCruiserBig.png");
+	private ImageIcon attackCruiserBig = new ImageIcon("AttackCruiserBig.png");
+	private ImageIcon starFighterBig = new ImageIcon("StarFighterBig.png");
+	private ImageIcon xWingBig = new ImageIcon("XWingBig.png");
+	private ImageIcon millFalconBig = new ImageIcon("MillFalconBig.png");
 	private ImageIcon rebelButton = new ImageIcon("RebelAlliance.png");
 	private ImageIcon galacticButton = new ImageIcon("GalacticEmpire.png");
 
@@ -48,10 +49,13 @@ public class View extends JPanel {
 	 * Create the panel.
 	 */
 	public View() {
+		testButton.setSize(34,27);
+		testButton.setLocation(714,393);
+		add(testButton);
 		setLayout(null);
 		
-		background = new ImageIcon("Project5-1.png").getImage();
 		setSize(1125,750);
+		background = new ImageIcon("Project5-1.png").getImage();
 		attack.setFont(new Font("Times", Font.BOLD, 18));
 		attack.setSize(115,30);
 		attack.setLocation(240,520);
@@ -59,8 +63,8 @@ public class View extends JPanel {
 		attack.setOpaque(true);
 		attack.setHorizontalAlignment(SwingConstants.CENTER);
 		add(attack);
-		shipName.setFont(new Font("Times", Font.BOLD, 18));
-		shipName.setSize(115,30);
+		shipName.setFont(new Font("Times", Font.BOLD, 13));
+		shipName.setSize(115,25);
 		shipName.setLocation(580,145);
 		shipName.setBackground(Color.white);
 		shipName.setOpaque(true);
@@ -111,31 +115,26 @@ public class View extends JPanel {
 		galacticShips[4].setBorderPainted(false);
 		galacticShips[4].setSize(320,200);
 		galacticShips[4].setLocation(750,125);
-		//rebelShips[0] = new Ship("Death Star", 4, 72, 72, 200, 200, deathStarBig);
-		//rebelShips[0].setBorderPainted(false);
-		//rebelShips[0].setSize(200,200);
-		//rebelShips[0].setLocation(775,125);
-		//add(rebelShips[0]);
-		//rebelShips[1] = new Ship("Star Destroyer", 4, 50, 120, 310, 185, starDestroyerBig);
-		//rebelShips[1].setBorderPainted(false);
-		//rebelShips[1].setSize(310,185);
-		//rebelShips[1].setLocation(775,125);
-		//add(rebelShips[1]);
-		//rebelShips[2] = new Ship("Sith Infiltrator", 4, 60, 120, 285, 181, sithInfiltratorBig);
-		//rebelShips[2].setBorderPainted(false);
-		//rebelShips[2].setSize(285,181);
-		//rebelShips[2].setLocation(775,125);
-		//add(rebelShips[2]);
-		//rebelShips[3] = new Ship("Tie Fighter", 2, 80, 35, 211, 180, tieFighterBig);
-		//rebelShips[3].setBorderPainted(false);
-		//rebelShips[3].setSize(211,180);
-		//rebelShips[3].setLocation(775,125);
-		//add(rebelShips[3]);
-		//rebelShips[4] = new Ship("Tie Bomber", 2, 75, 30, 320, 200, tieBomberBig);
-		//rebelShips[4].setBorderPainted(false);
-		//rebelShips[4].setSize(320,200);
-		//rebelShips[4].setLocation(750,125);
-		//add(rebelShips[4]);
+		rebelShips[0] = new Ship("Star Cruiser", 5, 72, 72, 351, 139, starCruiserBig);
+		rebelShips[0].setBorderPainted(false);
+		rebelShips[0].setSize(351,139);
+		rebelShips[0].setLocation(725,150);
+		rebelShips[1] = new Ship("Attack Cruiser", 4, 50, 120, 290, 205, attackCruiserBig);
+		rebelShips[1].setBorderPainted(false);
+		rebelShips[1].setSize(290,205);
+		rebelShips[1].setLocation(775,120);
+		rebelShips[2] = new Ship("Star Fighter", 3, 60, 120, 351, 200, starFighterBig);
+		rebelShips[2].setBorderPainted(false);
+		rebelShips[2].setSize(351,200);
+		rebelShips[2].setLocation(720,125);
+		rebelShips[3] = new Ship("X-Wing Fighter", 2, 80, 35, 330, 215, xWingBig);
+		rebelShips[3].setBorderPainted(false);
+		rebelShips[3].setSize(330,215);
+		rebelShips[3].setLocation(735,115);
+		rebelShips[4] = new Ship("Millennium Falcon", 2, 75, 30, 320, 210, millFalconBig);
+		rebelShips[4].setBorderPainted(false);
+		rebelShips[4].setSize(320,210);
+		rebelShips[4].setLocation(750,120);
 		rebel.setBorderPainted(false);
 		rebel.setSize(200,205);
 		rebel.setLocation(100,400);
@@ -190,6 +189,8 @@ public class View extends JPanel {
 
 			}
 			
+			String difficulty = (selectDiff.getSelectedItem()).toString();
+			System.out.println(difficulty);
 			changeScreen();
 			add(userShips[count]);
 			shipName.setText(userShips[count].name);
