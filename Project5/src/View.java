@@ -44,16 +44,126 @@ public class View extends JPanel {
 	private ImageIcon millFalconBig = new ImageIcon("MillFalconBig.png");
 	private ImageIcon rebelButton = new ImageIcon("RebelAlliance.png");
 	private ImageIcon galacticButton = new ImageIcon("GalacticEmpire.png");
+	Cell[][] grid = new Cell[10][10];
 
 	/**
 	 * Create the panel.
 	 */
 	public View() {
 		testButton.setSize(34,27);
-		testButton.setLocation(714,393);
+		testButton.setLocation(221,186);
 		add(testButton);
 		setLayout(null);
-		
+
+		for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[i].length; j++) {
+            	grid[i][j] = new Cell();
+            	grid[i][j].setSize(35,29);
+            	grid[i][j].addActionListener(new FireClickHandler());
+            	add(grid[i][j]);
+            }
+        }
+		grid[0][0].setLocation(637,393);
+		grid[0][1].setLocation(675,393);
+		grid[0][2].setLocation(714,393);
+		grid[0][3].setLocation(752,393);
+		grid[0][4].setLocation(791,393);
+		grid[0][5].setLocation(829,393);
+		grid[0][6].setLocation(867,393);
+		grid[0][7].setLocation(906,393);
+		grid[0][8].setLocation(944,393);
+		grid[0][9].setLocation(982,393);
+		grid[1][0].setLocation(637,423);
+		grid[1][1].setLocation(675,423);
+		grid[1][2].setLocation(714,423);
+		grid[1][3].setLocation(752,423);
+		grid[1][4].setLocation(791,423);
+		grid[1][5].setLocation(829,423);
+		grid[1][6].setLocation(867,423);
+		grid[1][7].setLocation(906,423);
+		grid[1][8].setLocation(944,423);
+		grid[1][9].setLocation(982,423);
+		grid[2][0].setLocation(637,454);
+		grid[2][1].setLocation(675,454);
+		grid[2][2].setLocation(714,454);
+		grid[2][3].setLocation(752,454);
+		grid[2][4].setLocation(791,454);
+		grid[2][5].setLocation(829,454);
+		grid[2][6].setLocation(867,454);
+		grid[2][7].setLocation(906,454);
+		grid[2][8].setLocation(944,454);
+		grid[2][9].setLocation(982,454);
+		grid[3][0].setLocation(637,485);
+		grid[3][1].setLocation(675,485);
+		grid[3][2].setLocation(714,485);
+		grid[3][3].setLocation(752,485);
+		grid[3][4].setLocation(791,485);
+		grid[3][5].setLocation(829,485);
+		grid[3][6].setLocation(867,485);
+		grid[3][7].setLocation(906,485);
+		grid[3][8].setLocation(944,485);
+		grid[3][9].setLocation(982,485);
+		grid[4][0].setLocation(637,516);
+		grid[4][1].setLocation(675,516);
+		grid[4][2].setLocation(714,516);
+		grid[4][3].setLocation(752,516);
+		grid[4][4].setLocation(791,516);
+		grid[4][5].setLocation(829,516);
+		grid[4][6].setLocation(867,516);
+		grid[4][7].setLocation(906,516);
+		grid[4][8].setLocation(944,516);
+		grid[4][9].setLocation(982,516);
+		grid[5][0].setLocation(637,547);
+		grid[5][1].setLocation(675,547);
+		grid[5][2].setLocation(714,547);
+		grid[5][3].setLocation(752,547);
+		grid[5][4].setLocation(791,547);
+		grid[5][5].setLocation(829,547);
+		grid[5][6].setLocation(867,547);
+		grid[5][7].setLocation(906,547);
+		grid[5][8].setLocation(944,547);
+		grid[5][9].setLocation(982,547);
+		grid[6][0].setLocation(637,578);
+		grid[6][1].setLocation(675,578);
+		grid[6][2].setLocation(714,578);
+		grid[6][3].setLocation(752,578);
+		grid[6][4].setLocation(791,578);
+		grid[6][5].setLocation(829,578);
+		grid[6][6].setLocation(867,578);
+		grid[6][7].setLocation(906,578);
+		grid[6][8].setLocation(944,578);
+		grid[6][9].setLocation(982,578);
+		grid[7][0].setLocation(637,609);
+		grid[7][1].setLocation(675,609);
+		grid[7][2].setLocation(714,609);
+		grid[7][3].setLocation(752,609);
+		grid[7][4].setLocation(791,609);
+		grid[7][5].setLocation(829,609);
+		grid[7][6].setLocation(867,609);
+		grid[7][7].setLocation(906,609);
+		grid[7][8].setLocation(944,609);
+		grid[7][9].setLocation(982,609);
+		grid[8][0].setLocation(637,638);
+		grid[8][1].setLocation(675,638);
+		grid[8][2].setLocation(714,638);
+		grid[8][3].setLocation(752,638);
+		grid[8][4].setLocation(791,638);
+		grid[8][5].setLocation(829,638);
+		grid[8][6].setLocation(867,638);
+		grid[8][7].setLocation(906,638);
+		grid[8][8].setLocation(944,638);
+		grid[8][9].setLocation(982,638);
+		grid[9][0].setLocation(637,669);
+		grid[9][1].setLocation(675,669);
+		grid[9][2].setLocation(714,669);
+		grid[9][3].setLocation(752,669);
+		grid[9][4].setLocation(791,669);
+		grid[9][5].setLocation(829,669);
+		grid[9][6].setLocation(867,669);
+		grid[9][7].setLocation(906,669);
+		grid[9][8].setLocation(944,669);
+		grid[9][9].setLocation(982,669);
+
 		setSize(1125,750);
 		background = new ImageIcon("Project5-1.png").getImage();
 		attack.setFont(new Font("Times", Font.BOLD, 18));
@@ -82,7 +192,7 @@ public class View extends JPanel {
 		fire.setSize(70,20);
 		fire.setLocation(260,630);
 		add(fire);
-		place.addActionListener(new FireClickHandler());
+		fire.addActionListener(new FireClickHandler());
 		selectHZ.setLocation(580, 225);
 		selectHZ.setSize(120, 20);
 		add(selectHZ);
@@ -254,7 +364,7 @@ public class View extends JPanel {
 		 * @param e the action event handled by this method
 		 */
 		
-		public void actionPerformed(ActionEvent e){	
+		public void actionPerformed(ActionEvent e){
 		}
 	}
 }
