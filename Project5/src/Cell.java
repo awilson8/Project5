@@ -3,9 +3,11 @@ import javax.swing.JButton;
 public class Cell extends JButton {
 	int status;
 	boolean occupied;
+	Ship s;
 	public Cell() {
 		status = 0;
 		occupied = false;
+		s = new Ship();
 	}
 	
 	public int getStatus() {

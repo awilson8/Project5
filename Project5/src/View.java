@@ -16,13 +16,10 @@ public class View extends JPanel {
 	Splash splash = new Splash();
 	JFrame frame = new JFrame("Drew Wilson - Project 5");
 	Image background;
-	JLabel attack = new JLabel ("Attack Here!");
 	JLabel shipName = new JLabel ("Ship name");
 	JTextField placeA = new JTextField("Ex: A");
 	JTextField place1 = new JTextField("Ex: 1");
-	JTextField location = new JTextField("Ex: A 1");
 	private JTextArea messageCenter = new JTextArea("");
-	JButton fire = new JButton ("FIRE!");
 	JButton rebel = new JButton();
 	JButton galactic = new JButton();
 	JButton place = new JButton ("Place");
@@ -32,7 +29,6 @@ public class View extends JPanel {
 	JComboBox selectDiff = new JComboBox(difficulty);
 	Ship[] rebelShips = new Ship[5];
 	Ship[] galacticShips = new Ship[5];
-	JButton testButton = new JButton();
 	private ImageIcon deathStarBig = new ImageIcon("DeathStarBig.png");
 	private ImageIcon starDestroyerBig = new ImageIcon("ImperialStarDestroyerBig.png");
 	private ImageIcon sithInfiltratorBig = new ImageIcon("SithInfiltratorBig.png");
@@ -53,13 +49,10 @@ public class View extends JPanel {
 	 * Create the panel.
 	 */
 	public View() {
-		testButton.setSize(34,27);
-		testButton.setLocation(221,186);
-		add(testButton);
 		setLayout(null);
 
-		for (int i=0; i<grid.length; i++) {
-            for (int j=0; j<grid[i].length; j++) {
+		for (int i=0; i<enemyGrid.length; i++) {
+            for (int j=0; j<enemyGrid[i].length; j++) {
             	enemyGrid[i][j] = new Cell();
             	enemyGrid[i][j].setSize(35,29);
             	enemyGrid[i][j].addActionListener(new FireClickHandler());
@@ -166,15 +159,117 @@ public class View extends JPanel {
 		enemyGrid[9][7].setLocation(906,668);
 		enemyGrid[9][8].setLocation(944,668);
 		enemyGrid[9][9].setLocation(982,668);
+		for (int k=0; k<grid.length; k++) {
+            for (int m=0; m<grid[k].length; m++) {
+            	grid[k][m] = new Cell();
+            	grid[k][m].setSize(35,29);
+            	grid[k][m].setOpaque(false);
+            	grid[k][m].setBorderPainted(false);
+            	add(grid[k][m]);
+            }
+        }
+		grid[0][0].setLocation(144,186);
+		grid[0][1].setLocation(182,186);
+		grid[0][2].setLocation(221,186);
+		grid[0][3].setLocation(259,186);
+		grid[0][4].setLocation(298,186);
+		grid[0][5].setLocation(336,186);
+		grid[0][6].setLocation(374,186);
+		grid[0][7].setLocation(413,186);
+		grid[0][8].setLocation(451,186);
+		grid[0][9].setLocation(489,186);
+		grid[1][0].setLocation(144,216);
+		grid[1][1].setLocation(182,216);
+		grid[1][2].setLocation(221,216);
+		grid[1][3].setLocation(259,216);
+		grid[1][4].setLocation(298,216);
+		grid[1][5].setLocation(336,216);
+		grid[1][6].setLocation(374,216);
+		grid[1][7].setLocation(413,216);
+		grid[1][8].setLocation(451,216);
+		grid[1][9].setLocation(489,216);
+		grid[2][0].setLocation(144,247);
+		grid[2][1].setLocation(182,247);
+		grid[2][2].setLocation(221,247);
+		grid[2][3].setLocation(259,247);
+		grid[2][4].setLocation(298,247);
+		grid[2][5].setLocation(336,247);
+		grid[2][6].setLocation(374,247);
+		grid[2][7].setLocation(413,247);
+		grid[2][8].setLocation(451,247);
+		grid[2][9].setLocation(489,247);
+		grid[3][0].setLocation(144,278);
+		grid[3][1].setLocation(182,278);
+		grid[3][2].setLocation(221,278);
+		grid[3][3].setLocation(259,278);
+		grid[3][4].setLocation(298,278);
+		grid[3][5].setLocation(336,278);
+		grid[3][6].setLocation(374,278);
+		grid[3][7].setLocation(413,278);
+		grid[3][8].setLocation(451,278);
+		grid[3][9].setLocation(489,278);
+		grid[4][0].setLocation(144,308);
+		grid[4][1].setLocation(182,308);
+		grid[4][2].setLocation(221,308);
+		grid[4][3].setLocation(259,308);
+		grid[4][4].setLocation(298,308);
+		grid[4][5].setLocation(336,308);
+		grid[4][6].setLocation(374,308);
+		grid[4][7].setLocation(413,308);
+		grid[4][8].setLocation(451,308);
+		grid[4][9].setLocation(489,308);
+		grid[5][0].setLocation(144,339);
+		grid[5][1].setLocation(182,339);
+		grid[5][2].setLocation(221,339);
+		grid[5][3].setLocation(259,339);
+		grid[5][4].setLocation(298,339);
+		grid[5][5].setLocation(336,339);
+		grid[5][6].setLocation(374,339);
+		grid[5][7].setLocation(413,339);
+		grid[5][8].setLocation(451,339);
+		grid[5][9].setLocation(489,339);
+		grid[6][0].setLocation(144,370);
+		grid[6][1].setLocation(182,370);
+		grid[6][2].setLocation(221,370);
+		grid[6][3].setLocation(259,370);
+		grid[6][4].setLocation(298,370);
+		grid[6][5].setLocation(336,370);
+		grid[6][6].setLocation(374,370);
+		grid[6][7].setLocation(413,370);
+		grid[6][8].setLocation(451,370);
+		grid[6][9].setLocation(489,370);
+		grid[7][0].setLocation(144,401);
+		grid[7][1].setLocation(182,401);
+		grid[7][2].setLocation(221,401);
+		grid[7][3].setLocation(259,401);
+		grid[7][4].setLocation(298,401);
+		grid[7][5].setLocation(336,401);
+		grid[7][6].setLocation(374,401);
+		grid[7][7].setLocation(413,401);
+		grid[7][8].setLocation(451,401);
+		grid[7][9].setLocation(489,401);
+		grid[8][0].setLocation(144,431);
+		grid[8][1].setLocation(182,431);
+		grid[8][2].setLocation(221,431);
+		grid[8][3].setLocation(259,431);
+		grid[8][4].setLocation(298,431);
+		grid[8][5].setLocation(336,431);
+		grid[8][6].setLocation(374,431);
+		grid[8][7].setLocation(413,431);
+		grid[8][8].setLocation(451,431);
+		grid[8][9].setLocation(489,431);
+		grid[9][0].setLocation(144,462);
+		grid[9][1].setLocation(182,462);
+		grid[9][2].setLocation(221,462);
+		grid[9][3].setLocation(259,462);
+		grid[9][4].setLocation(298,462);
+		grid[9][5].setLocation(336,462);
+		grid[9][6].setLocation(374,462);
+		grid[9][7].setLocation(413,462);
+		grid[9][8].setLocation(451,462);
+		grid[9][9].setLocation(489,462);
 		setSize(1125,750);
 		background = new ImageIcon("Project5-1.png").getImage();
-		attack.setFont(new Font("Times", Font.BOLD, 18));
-		attack.setSize(115,30);
-		attack.setLocation(240,520);
-		attack.setBackground(Color.white);
-		attack.setOpaque(true);
-		attack.setHorizontalAlignment(SwingConstants.CENTER);
-		add(attack);
 		shipName.setFont(new Font("Times", Font.BOLD, 13));
 		shipName.setSize(115,25);
 		shipName.setLocation(580,145);
@@ -182,19 +277,12 @@ public class View extends JPanel {
 		shipName.setOpaque(true);
 		shipName.setHorizontalAlignment(SwingConstants.CENTER);
 		add(shipName);
-		location.setSize(70,20);
-		location.setLocation(260,585);
-		add(location);
 		placeA.setSize(50,20);
 		placeA.setLocation(585,190);
 		add(placeA);
 		place1.setSize(50,20);
 		place1.setLocation(640,190);
 		add(place1);
-		fire.setSize(70,20);
-		fire.setLocation(260,630);
-		add(fire);
-		fire.addActionListener(new FireClickHandler());
 		selectHZ.setLocation(580, 225);
 		selectHZ.setSize(120, 20);
 		add(selectHZ);
@@ -203,10 +291,11 @@ public class View extends JPanel {
 		add(place);
 		place.addActionListener(new PlaceClickHandler());
 		messageCenter.setSize(300,190);
-		messageCenter.setLocation(675,130);
+		messageCenter.setLocation(155,515);
 		messageCenter.setEditable(false);
 		messageCenter.setLineWrap(true);
 		messageCenter.setWrapStyleWord(true);
+		add(messageCenter);
 		galacticShips[0] = new Ship("Death Star", 4, 72, 72, 200, 200, deathStarBig);
 		galacticShips[0].setBorderPainted(false);
 		galacticShips[0].setSize(200,200);
@@ -287,17 +376,20 @@ public class View extends JPanel {
 		int hzOrVt = r.nextInt(2);
 		int count = 1;
 		int count2 = 0;
-		System.out.println(i + " " + j);
 		if (userShips == rebelShips) {
+			while (i+userShips[0].strength > 9) {
+				i = r.nextInt(10);
+			}
+			while (j+userShips[0].strength > 9) {
+				j = r.nextInt(10);
+			}
 			deathStar(i,j);
 			while (count < userShips.length) {
 				boolean available = false;
 				while (available == false) {
-					System.out.println("setEnemyGrid");
 					i = r.nextInt(10);
 					j = r.nextInt(10);
 					hzOrVt = r.nextInt(2);
-					System.out.println(hzOrVt);
 					if (hzOrVt == 0) {
 						while (i+userShips[count].strength > 9) {
 							i = r.nextInt(10);
@@ -308,13 +400,11 @@ public class View extends JPanel {
 							j = r.nextInt(10);
 						}
 					}
-					System.out.println(i + " " + j);
 					if (isAvailable(i,j,hzOrVt,userShips[count].strength)) {
 						available = true;
 					}
 				}
-				placeShip(i,j,hzOrVt,userShips[count].strength);
-				System.out.println("Count =" + count);
+				placeShip(i,j,hzOrVt, userShips[count], userShips[count].strength);
 				count++;
 			}
 		}
@@ -322,11 +412,9 @@ public class View extends JPanel {
 			while (count2 < userShips.length) {
 				boolean available = false;
 				while (available == false) {
-					System.out.println("setEnemyGrid");
 					i = r.nextInt(10);
 					j = r.nextInt(10);
 					hzOrVt = r.nextInt(2);
-					System.out.println(hzOrVt);
 					if (hzOrVt == 0) {
 						while (i+userShips[count2].strength > 9) {
 							i = r.nextInt(10);
@@ -337,13 +425,11 @@ public class View extends JPanel {
 							j = r.nextInt(10);
 						}
 					}
-					System.out.println(i + " " + j);
 					if (isAvailable(i,j,hzOrVt,userShips[count2].strength)) {
 						available = true;
 					}
 				}
-				placeShip(i,j,hzOrVt,userShips[count2].strength);
-				System.out.println("Count =" + count);
+				placeShip(i,j,hzOrVt, userShips[count2], userShips[count2].strength);
 				count2++;
 			}
 		}
@@ -351,26 +437,13 @@ public class View extends JPanel {
 	
 	public void deathStar(int i, int j) {
 		enemyGrid[i][j].setStatus(1);
-		if (i==9 && j<9) {
-			enemyGrid[i][j+1].setStatus(1);
-			enemyGrid[i-1][j].setStatus(1);
-			enemyGrid[i-1][j+1].setStatus(1);
-		}
-		else if (i==9 && j==9) {
-			enemyGrid[i-1][j].setStatus(1);
-			enemyGrid[i-1][j-1].setStatus(1);
-			enemyGrid[i-1][j-1].setStatus(1);
-		}
-		else if (i<9 && j==9) {
-			enemyGrid[i][j-1].setStatus(1);
-			enemyGrid[i+1][j-1].setStatus(1);
-			enemyGrid[i+1][j].setStatus(1);
-		}
-		else {
-			enemyGrid[i][j+1].setStatus(1);
-			enemyGrid[i+1][j].setStatus(1);
-			enemyGrid[i+1][j+1].setStatus(1);
-		}
+		enemyGrid[i][j].s = galacticShips[0];
+		enemyGrid[i+1][j].setStatus(1);
+		enemyGrid[i+1][j].s = galacticShips[0];
+		enemyGrid[i][j+1].setStatus(1);
+		enemyGrid[i][j+1].s = galacticShips[0];
+		enemyGrid[i+1][j+1].setStatus(1);
+		enemyGrid[i+1][j+1].s = galacticShips[0];
 	}
 	
 	public boolean isAvailable(int i, int j, int hzOrVt, int strength) {
@@ -396,25 +469,22 @@ public class View extends JPanel {
 	public int testCell(Cell c) {
 		int occupied = 0;
 		if (c.status == 1) {
-			System.out.println("testCell");
 			occupied = 1;
 		}
 		return occupied;
 	}
 	
-	public void placeShip(int i, int j, int hzOrVt, int strength) {
+	public void placeShip(int i, int j, int hzOrVt, Ship s, int strength) {
 		if (hzOrVt == 0) {
 			for (int x=0;x<strength;x++) {
-				System.out.println("placeShip0");
-				System.out.println(i + " " + j);
 				enemyGrid[i+x][j].setStatus(1);
+				enemyGrid[i+x][j].s = s;
 			}
 		}
 		else {
 			for (int x=0;x<strength;x++) {
-				System.out.println("placeShip1");
-				System.out.println(i + " " + j);
 				enemyGrid[i][j+x].setStatus(1);
+				enemyGrid[i][j+x].s = s;
 			}
 		}
 	}
@@ -468,27 +538,32 @@ public class View extends JPanel {
 				isVertical = false;
 			}
 
-			char letter = (placeA.getText()).charAt(0);
-			char number = (place1.getText()).charAt(0);
-			userShips[count].letter = letter;
-			userShips[count].number = number;
-			userShips[count].isVertical = isVertical;
-			remove(userShips[count]);
-			count++;
-			if (count <= ARRAY_MAX_SIZE) {
-				add(userShips[count]);
-				shipName.setText(userShips[count].name);
-				repaint();
+			String letter = placeA.getText().substring(0, 1);
+			int number = (place1.getText()).charAt(0);
+			if (!(letter.matches("[a-jA-J]")) && (number >=0 && number<=9) ) {
+				messageCenter.setText("Invalid Cooridinates");
 			}
 			else {
-				remove(userShips[count-1]);
-				remove(place);
-				remove(placeA);
-				remove(place1);
-				remove(selectHZ);
-				remove(shipName);
-				add(messageCenter);
-				repaint();
+				userShips[count].letter = letter;
+				userShips[count].number = number;
+				userShips[count].isVertical = isVertical;
+				remove(userShips[count]);
+				count++;
+				if (count <= ARRAY_MAX_SIZE) {
+					add(userShips[count]);
+					shipName.setText(userShips[count].name);
+					repaint();
+				}	
+				else {
+					remove(userShips[count-1]);
+					remove(place);
+					remove(placeA);
+					remove(place1);
+					remove(selectHZ);
+					remove(shipName);
+					//add side logo
+					repaint();
+				}
 			}
 		}
 	}
@@ -507,7 +582,6 @@ public class View extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			Cell temp = (Cell)e.getSource();
 			if (temp.getStatus() == 0) {
-				//miss
 				temp.setBackground(Color.blue);
 				temp.setOpaque(true);
 				temp.setEnabled(false);
@@ -517,7 +591,16 @@ public class View extends JPanel {
 				temp.setOpaque(true);
 				temp.setEnabled(false);
 				temp.setStatus(2);
+				temp.s.strength -= 1;
+				System.out.println(temp.s.name + " " + temp.s.strength);
+				if (temp.s.strength == 0) {
+					sunk();
+				}
 			}
 		}
+	}
+	
+	public void sunk() {
+		
 	}
 }

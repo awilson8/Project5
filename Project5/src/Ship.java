@@ -4,7 +4,7 @@ import javax.swing.JButton;
 public class Ship extends JButton {
 	String name;
 	int strength;
-	char letter;
+	String letter;
 	int number;
 	boolean isVertical;
 	int xSize;
@@ -25,14 +25,14 @@ public class Ship extends JButton {
 	public Ship(){
 		name = "";
 		strength = 0;
-		letter = 'A';
+		letter = "A";
 		number = 0;
 		isVertical = true;
 		xSize = 0;
 		ySize = 0;
 	}
 	
-	public Ship(String _name, int _strength, char _letter, int _number,
+	public Ship(String _name, int _strength, String _letter, int _number,
 			boolean _isVertical, int _xSize, int _ySize) {
 		name = _name;
 		strength = _strength;
