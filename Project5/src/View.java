@@ -1,8 +1,13 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Random;
+import javax.sound.sampled.*;
 import javax.swing.*;
+import sun.audio.*;
 
 /**
  * Gui for Project5.
@@ -11,6 +16,7 @@ import javax.swing.*;
 */
 public class View extends JPanel {
 	int count = 0;
+	int count2 = 0;
 	Random r = new Random();
 	private final int ARRAY_MAX_SIZE = 4;
 	Splash splash = new Splash();
@@ -44,6 +50,8 @@ public class View extends JPanel {
 	Cell[][] grid = new Cell[10][10];
 	Cell[][] enemyGrid = new Cell[10][10];
 	Ship[] userShips;
+	int shipsLeft = 5;
+	int state = 0;
 
 	/**
 	 * Create the panel.
@@ -165,6 +173,7 @@ public class View extends JPanel {
             	grid[k][m].setSize(35,29);
             	grid[k][m].setOpaque(false);
             	grid[k][m].setBorderPainted(false);
+            	grid[k][m].addActionListener(new PlaceClickHandler());
             	add(grid[k][m]);
             }
         }
@@ -290,8 +299,9 @@ public class View extends JPanel {
 		place.setLocation(605,265);
 		add(place);
 		place.addActionListener(new PlaceClickHandler());
-		messageCenter.setSize(300,190);
-		messageCenter.setLocation(155,515);
+		messageCenter.setSize(300,160);
+		messageCenter.setLocation(155,530);
+		messageCenter.setFont(new Font("Times", Font.BOLD, 22));
 		messageCenter.setEditable(false);
 		messageCenter.setLineWrap(true);
 		messageCenter.setWrapStyleWord(true);
@@ -377,59 +387,59 @@ public class View extends JPanel {
 		int count = 1;
 		int count2 = 0;
 		if (userShips == rebelShips) {
-			while (i+userShips[0].strength > 9) {
+			while (i+galacticShips[0].strength > 9) {
 				i = r.nextInt(10);
 			}
-			while (j+userShips[0].strength > 9) {
+			while (j+galacticShips[0].strength > 9) {
 				j = r.nextInt(10);
 			}
 			deathStar(i,j);
-			while (count < userShips.length) {
+			while (count < galacticShips.length) {
 				boolean available = false;
 				while (available == false) {
 					i = r.nextInt(10);
 					j = r.nextInt(10);
 					hzOrVt = r.nextInt(2);
 					if (hzOrVt == 0) {
-						while (i+userShips[count].strength > 9) {
+						while (i+galacticShips[count].strength > 9) {
 							i = r.nextInt(10);
 						}
 					}
 					else {
-						while (j+userShips[count].strength > 9) {
+						while (j+galacticShips[count].strength > 9) {
 							j = r.nextInt(10);
 						}
 					}
-					if (isAvailable(i,j,hzOrVt,userShips[count].strength)) {
+					if (isAvailable(i,j,hzOrVt,galacticShips[count].strength)) {
 						available = true;
 					}
 				}
-				placeShip(i,j,hzOrVt, userShips[count], userShips[count].strength);
+				placeShip(i,j,hzOrVt, galacticShips[count], galacticShips[count].strength);
 				count++;
 			}
 		}
 		else {
-			while (count2 < userShips.length) {
+			while (count2 < rebelShips.length) {
 				boolean available = false;
 				while (available == false) {
 					i = r.nextInt(10);
 					j = r.nextInt(10);
 					hzOrVt = r.nextInt(2);
 					if (hzOrVt == 0) {
-						while (i+userShips[count2].strength > 9) {
+						while (i+rebelShips[count2].strength > 9) {
 							i = r.nextInt(10);
 						}
 					}
 					else {
-						while (j+userShips[count2].strength > 9) {
+						while (j+rebelShips[count2].strength > 9) {
 							j = r.nextInt(10);
 						}
 					}
-					if (isAvailable(i,j,hzOrVt,userShips[count2].strength)) {
+					if (isAvailable(i,j,hzOrVt,rebelShips[count2].strength)) {
 						available = true;
 					}
 				}
-				placeShip(i,j,hzOrVt, userShips[count2], userShips[count2].strength);
+				placeShip(i,j,hzOrVt, rebelShips[count2], rebelShips[count2].strength);
 				count2++;
 			}
 		}
@@ -532,18 +542,69 @@ public class View extends JPanel {
 		 * @param e the action event handled by this method
 		 */
 		
-		public void actionPerformed(ActionEvent e) {	
+		public void actionPerformed(ActionEvent e) {
+			Cell temp = (Cell)e.getSource();
+			temp.setBackground(Color.green);
+			temp.setOpaque(true);
+			int strength = userShips[count2].strength;
+			int a = -1;
+			int b = -1;
+			for (int i=0;i<grid.length;i++) {
+				for (int j=0;j<grid[i].length;j++) {
+					if (grid[i][j] == temp) {
+						a = i;
+						b = j;
+					}
+				}
+			}
+			state = 1;
+			if (state == 1) {
+				if (isAvailableI(strength,a,b)) {
+					grid[a+strength][b].setBackground(Color.green);
+					grid[a+strength][b].setOpaque(true);
+					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
+						grid[a+strength][b].removeActionListener(act);
+					}
+					grid[a+strength][b].addActionListener(new PlaceClickHandler2());
+				}
+				if (isAvailableJ(strength,a,b)) {
+					grid[a][b+strength].setBackground(Color.green);
+					grid[a][b+strength].setOpaque(true);
+					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
+						grid[a][b+strength].removeActionListener(act);
+					}
+					grid[a][b+strength].addActionListener(new PlaceClickHandler2());
+				}
+				if (isAvailableNegI(strength,a,b)) {
+					grid[a-strength][b].setBackground(Color.green);
+					grid[a-strength][b].setOpaque(true);
+					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
+						grid[a-strength][b].removeActionListener(act);
+					}
+					grid[a-strength][b].addActionListener(new PlaceClickHandler2());
+				}
+				if (isAvailableNegJ(strength,a,b)) {
+					grid[a][b-strength].setBackground(Color.green);
+					grid[a][b-strength].setOpaque(true);
+					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
+						grid[a][b-strength].removeActionListener(act);
+					}
+					grid[a][b-strength].addActionListener(new PlaceClickHandler2());
+				}
+			}
+			/**messageCenter.setText("");
 			boolean isVertical = true;
 			if ((selectHZ.getSelectedItem()).toString().equals("Horizontal"))  {
 				isVertical = false;
 			}
 
 			String letter = placeA.getText().substring(0, 1);
-			int number = (place1.getText()).charAt(0);
+			int number = ((place1.getText().charAt(0))-48);
 			if (!(letter.matches("[a-jA-J]")) && (number >=0 && number<=9) ) {
 				messageCenter.setText("Invalid Cooridinates");
 			}
 			else {
+				System.out.println(isVertical + " " + letter + " " + number);
 				userShips[count].letter = letter;
 				userShips[count].number = number;
 				userShips[count].isVertical = isVertical;
@@ -564,7 +625,96 @@ public class View extends JPanel {
 					//add side logo
 					repaint();
 				}
-			}
+			}*/
+		}
+	}
+	
+	public boolean isAvailableI(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x+strength>9){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x+i][y]);
+			System.out.println(occupied);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isAvailableNegI(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x-i][y]);
+			System.out.println(occupied);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isAvailableJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y+strength>9){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x][y+1]);
+			System.out.println(occupied);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isAvailableNegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y-strength<0){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x][y-1]);
+			System.out.println(occupied);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	/**
+	 * PlaceClickHandler2 provides the action listener for the go button
+	 */
+	private class PlaceClickHandler2 implements ActionListener {
+
+		/**
+		 * This method handles the tasks of setting the ship
+		 *
+		 * @param e the action event handled by this method
+		 */
+		
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("You Made It!");
 		}
 	}
 	
@@ -585,6 +735,83 @@ public class View extends JPanel {
 				temp.setBackground(Color.blue);
 				temp.setOpaque(true);
 				temp.setEnabled(false);
+				/**Thread blueBlaster = new Thread(new Runnable(){
+					public void run(){
+						try {
+							Clip clip = AudioSystem.getClip();
+							File blue = new File("BlasterMiss.wav");
+				            AudioInputStream inputStream = AudioSystem.getAudioInputStream(blue);
+				            clip.open(inputStream);
+				            clip.start(); 
+				        } 
+						catch (Exception e) {
+				            System.err.println(e.getMessage());
+				        }
+						
+						
+						//File blue = new File("BlasterMiss.wav");
+						//AudioInputStream audioInputStream = null;
+				        //try { 
+				         //   audioInputStream = AudioSystem.getAudioInputStream(blue);
+				        //} 
+				        //catch (Exception e) { 
+				         //   e.printStackTrace();
+				        //    return;
+				        //}
+				        
+				        //AudioFormat format = audioInputStream.getFormat();
+				        //SourceDataLine auline = null;
+				        //DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+				 
+				        //try { 
+				         //   auline = (SourceDataLine) AudioSystem.getLine(info);
+				         //   auline.open(format);
+				        //} 
+				        //catch (LineUnavailableException e) { 
+				         //   e.printStackTrace();
+				         //   return;
+				        //} 
+				        //catch (Exception e) { 
+				          //  e.printStackTrace();
+				           // return;
+				        //}
+				        
+				        //auline.start();
+
+						//try {
+							//System.out.println("I'm running!");
+							//File blue = new File("BlasterMiss.wav");
+							//String st = blue.getAbsolutePath();
+							//InputStream in = new FileInputStream(st);
+							//AudioStream as = new AudioStream(in);
+							//Clip sound = (Clip)AudioSystem.getLine(new Line.Info(Clip.class));
+							//sound.open(AudioSystem.getAudioInputStream(blue));
+							
+					    //}
+						//catch (Exception e) {
+					        //System.err.println(e.getMessage());
+					    //}
+						//try {
+							//File blue = new File("BlasterMiss.wav");
+						    //AudioInputStream stream;
+						    //AudioFormat format;
+						    //DataLine.Info info;
+						    //Clip clip;
+
+						    //stream = AudioSystem.getAudioInputStream(blue);
+						    //format = stream.getFormat();
+						    //info = new DataLine.Info(Clip.class, format);
+						    //clip = (Clip) AudioSystem.getLine(info);
+						    //clip.open(stream);
+						    //clip.start();
+						//}
+						//catch (Exception e) {
+						    //System.out.println(e.getMessage();
+						//}
+					}
+				});
+				blueBlaster.start();
+				*/
 			}
 			else if (temp.getStatus() == 1) {
 				temp.setBackground(Color.red);
@@ -594,13 +821,21 @@ public class View extends JPanel {
 				temp.s.strength -= 1;
 				System.out.println(temp.s.name + " " + temp.s.strength);
 				if (temp.s.strength == 0) {
-					sunk();
+					sunk(temp.s.name);
 				}
 			}
 		}
 	}
 	
-	public void sunk() {
-		
+	public void sunk(String ship) {
+		messageCenter.setText("You sunk the enemy " + ship + "!");
+		shipsLeft -= 1;
+		if (shipsLeft == 0) {
+			winner();
+		}
+	}
+	
+	public void winner() {
+		messageCenter.setText(messageCenter.getText() + "\nYou Won!");
 	}
 }
