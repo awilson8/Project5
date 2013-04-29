@@ -13,30 +13,30 @@ import javax.swing.*;
  * @version 1.0
 */
 public class View extends JPanel {
-	int count = 0;
-	int count2 = 0;
-	int count3 = 0;
-	int userHit = 1;
-	int enemyHit = 1;
-	int gameOver = 0;
-	int wasHit = 0;
-	Random r = new Random();
+	private int count = 0;
+	private int count2 = 0;
+	private int count3 = 0;
+	private int userHit = 1;
+	private int enemyHit = 1;
+	private int gameOver = 0;
+	private int wasHit = 0;
+	private Random r = new Random();
 	private final int ARRAY_MAX_SIZE = 4;
-	Splash splash = new Splash();
-	RebelVictory rebelVictory = new RebelVictory();
-	ImperialVictory imperialVictory = new ImperialVictory();
-	EnemyRebelVictory enemyRebelVictory = new EnemyRebelVictory();
-	EnemyImperialVictory enemyImperialVictory = new EnemyImperialVictory();
-	JFrame frame = new JFrame("Drew Wilson - Project 5");
-	Image background;
-	JLabel shipName = new JLabel ("Ship name");
+	private Splash splash = new Splash();
+	private RebelVictory rebelVictory = new RebelVictory();
+	private ImperialVictory imperialVictory = new ImperialVictory();
+	private EnemyRebelVictory enemyRebelVictory = new EnemyRebelVictory();
+	private EnemyImperialVictory enemyImperialVictory = new EnemyImperialVictory();
+	private JFrame frame = new JFrame("Drew Wilson - Project 5");
+	private Image background;
+	private JLabel shipName = new JLabel ("Ship name");
 	private JTextArea messageCenter = new JTextArea("");
-	JButton rebel = new JButton();
-	JButton galactic = new JButton();
-	String[] difficulty = {"Easy", "Medium", "Hard"};
-	JComboBox selectDiff = new JComboBox(difficulty);
-	Ship[] rebelShips = new Ship[5];
-	Ship[] galacticShips = new Ship[5];
+	private JButton rebel = new JButton();
+	private JButton galactic = new JButton();
+	private String[] difficulty = {"Easy", "Medium", "Hard"};
+	private JComboBox selectDiff = new JComboBox(difficulty);
+	private Ship[] rebelShips = new Ship[5];
+	private Ship[] galacticShips = new Ship[5];
 	private ImageIcon deathStarBig = new ImageIcon("DeathStarBig.png");
 	private ImageIcon starDestroyerBig = new ImageIcon("ImperialStarDestroyerBig.png");
 	private ImageIcon sithInfiltratorBig = new ImageIcon("SithInfiltratorBig.png");
@@ -49,34 +49,34 @@ public class View extends JPanel {
 	private ImageIcon millFalconBig = new ImageIcon("MillFalconBig.png");
 	private ImageIcon rebelButton = new ImageIcon("RebelAlliance.png");
 	private ImageIcon galacticButton = new ImageIcon("GalacticEmpire.png");
-	Cell[][] grid = new Cell[10][10];
-	Cell[][] enemyGrid = new Cell[10][10];
-	Ship[] userShips;
-	int shipsLeft = 5;
-	int userShipsLeft = 5;
-	int state = 0;
-	Cell cellHit;
-	Cell placed;
-	Cell deathStarPlaced;
-	boolean isDeathStarPlaced = false;
-	Cell deathStarPlusI = null;
-	Cell deathStarPlusJ = null;
-	Cell deathStarNegI = null;
-	Cell deathStarNegJ = null;
-	Cell deathStarIJ = null;
-	Cell deathStarNegIJ = null;
-	Cell deathStarINegJ = null;
-	Cell deathStarNegINegJ = null;
-	Cell plusI = null;
-	Cell plusJ = null;
-	Cell negI = null;
-	Cell negJ = null;
-	Ship galacticLogo;
-	Ship rebelLogo;
-	String gameDifficulty;
-    Thread splashSound;
-    AudioInputStream audio;
-    Clip clip;
+	private Cell[][] grid = new Cell[10][10];
+	private Cell[][] enemyGrid = new Cell[10][10];
+	private Ship[] userShips;
+	private int shipsLeft = 5;
+	private int userShipsLeft = 5;
+	private int state = 0;
+	private Cell cellHit;
+	private Cell placed;
+	private Cell deathStarPlaced;
+	private boolean isDeathStarPlaced = false;
+	private Cell deathStarPlusI = null;
+	private Cell deathStarPlusJ = null;
+	private Cell deathStarNegI = null;
+	private Cell deathStarNegJ = null;
+	private Cell deathStarIJ = null;
+	private Cell deathStarNegIJ = null;
+	private Cell deathStarINegJ = null;
+	private Cell deathStarNegINegJ = null;
+	private Cell plusI = null;
+	private Cell plusJ = null;
+	private Cell negI = null;
+	private Cell negJ = null;
+	private Ship galacticLogo;
+	private Ship rebelLogo;
+	private String gameDifficulty;
+	private Thread splashSound;
+	private AudioInputStream audio;
+	private Clip clip;
 
 	/**
 	 * Create the panel.
@@ -319,43 +319,43 @@ public class View extends JPanel {
 		messageCenter.setLineWrap(true);
 		messageCenter.setWrapStyleWord(true);
 		add(messageCenter);
-		galacticShips[0] = new Ship("Death Star", 4, 72, 72, 200, 200, deathStarBig);
+		galacticShips[0] = new Ship("Death Star", 4, deathStarBig);
 		galacticShips[0].setBorderPainted(false);
 		galacticShips[0].setSize(200,200);
 		galacticShips[0].setLocation(800,125);
-		galacticShips[1] = new Ship("Star Destroyer", 4, 50, 120, 310, 185, starDestroyerBig);
+		galacticShips[1] = new Ship("Star Destroyer", 4, starDestroyerBig);
 		galacticShips[1].setBorderPainted(false);
 		galacticShips[1].setSize(310,185);
 		galacticShips[1].setLocation(725,125);
-		galacticShips[2] = new Ship("Sith Infiltrator", 4, 60, 120, 285, 181, sithInfiltratorBig);
+		galacticShips[2] = new Ship("Sith Infiltrator", 4, sithInfiltratorBig);
 		galacticShips[2].setBorderPainted(false);
 		galacticShips[2].setSize(285,181);
 		galacticShips[2].setLocation(775,125);
-		galacticShips[3] = new Ship("Tie Fighter", 2, 80, 35, 211, 180, tieFighterBig);
+		galacticShips[3] = new Ship("Tie Fighter", 2, tieFighterBig);
 		galacticShips[3].setBorderPainted(false);
 		galacticShips[3].setSize(211,180);
 		galacticShips[3].setLocation(800,125);
-		galacticShips[4] = new Ship("Tie Bomber", 2, 75, 30, 320, 200, tieBomberBig);
+		galacticShips[4] = new Ship("Tie Bomber", 2, tieBomberBig);
 		galacticShips[4].setBorderPainted(false);
 		galacticShips[4].setSize(320,200);
 		galacticShips[4].setLocation(750,125);
-		rebelShips[0] = new Ship("Star Cruiser", 5, 72, 72, 351, 139, starCruiserBig);
+		rebelShips[0] = new Ship("Star Cruiser", 5, starCruiserBig);
 		rebelShips[0].setBorderPainted(false);
 		rebelShips[0].setSize(351,139);
 		rebelShips[0].setLocation(725,150);
-		rebelShips[1] = new Ship("Attack Cruiser", 4, 50, 120, 290, 205, attackCruiserBig);
+		rebelShips[1] = new Ship("Attack Cruiser", 4, attackCruiserBig);
 		rebelShips[1].setBorderPainted(false);
 		rebelShips[1].setSize(290,205);
 		rebelShips[1].setLocation(775,120);
-		rebelShips[2] = new Ship("Star Fighter", 3, 60, 120, 351, 200, starFighterBig);
+		rebelShips[2] = new Ship("Star Fighter", 3, starFighterBig);
 		rebelShips[2].setBorderPainted(false);
 		rebelShips[2].setSize(351,200);
 		rebelShips[2].setLocation(720,125);
-		rebelShips[3] = new Ship("X-Wing Fighter", 2, 80, 35, 330, 215, xWingBig);
+		rebelShips[3] = new Ship("X-Wing Fighter", 2, xWingBig);
 		rebelShips[3].setBorderPainted(false);
 		rebelShips[3].setSize(330,215);
 		rebelShips[3].setLocation(735,115);
-		rebelShips[4] = new Ship("Millennium Falcon", 2, 75, 30, 320, 210, millFalconBig);
+		rebelShips[4] = new Ship("Millennium Falcon", 2, millFalconBig);
 		rebelShips[4].setBorderPainted(false);
 		rebelShips[4].setSize(320,210);
 		rebelShips[4].setLocation(750,120);
@@ -404,6 +404,9 @@ public class View extends JPanel {
 		});
 	}
 	
+	/**
+	 * Paints the background
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, 1125, 750, null);
@@ -422,6 +425,9 @@ public class View extends JPanel {
 		splashSound.run();
 	}
 	
+	/**
+	 * sets the enemy grid randomly
+	 */
 	public void setEnemyGrid() {
 		int i = r.nextInt(10);
 		int j = r.nextInt(10);
@@ -429,10 +435,10 @@ public class View extends JPanel {
 		int count = 1;
 		int count2 = 0;
 		if (userShips == rebelShips) {
-			while (i+galacticShips[0].strength > 9) {
+			while (i+galacticShips[0].getStrength() > 9) {
 				i = r.nextInt(10);
 			}
-			while (j+galacticShips[0].strength > 9) {
+			while (j+galacticShips[0].getStrength() > 9) {
 				j = r.nextInt(10);
 			}
 			deathStar(i,j);
@@ -443,20 +449,20 @@ public class View extends JPanel {
 					j = r.nextInt(10);
 					hzOrVt = r.nextInt(2);
 					if (hzOrVt == 0) {
-						while (i+galacticShips[count].strength > 9) {
+						while (i+galacticShips[count].getStrength() > 9) {
 							i = r.nextInt(10);
 						}
 					}
 					else {
-						while (j+galacticShips[count].strength > 9) {
+						while (j+galacticShips[count].getStrength() > 9) {
 							j = r.nextInt(10);
 						}
 					}
-					if (isAvailable(i,j,hzOrVt,galacticShips[count].strength)) {
+					if (isAvailable(i,j,hzOrVt,galacticShips[count].getStrength())) {
 						available = true;
 					}
 				}
-				placeShip(i,j,hzOrVt, galacticShips[count], galacticShips[count].strength);
+				placeShip(i,j,hzOrVt, galacticShips[count], galacticShips[count].getStrength());
 				count++;
 			}
 		}
@@ -468,36 +474,49 @@ public class View extends JPanel {
 					j = r.nextInt(10);
 					hzOrVt = r.nextInt(2);
 					if (hzOrVt == 0) {
-						while (i+rebelShips[count2].strength > 9) {
+						while (i+rebelShips[count2].getStrength() > 9) {
 							i = r.nextInt(10);
 						}
 					}
 					else {
-						while (j+rebelShips[count2].strength > 9) {
+						while (j+rebelShips[count2].getStrength() > 9) {
 							j = r.nextInt(10);
 						}
 					}
-					if (isAvailable(i,j,hzOrVt,rebelShips[count2].strength)) {
+					if (isAvailable(i,j,hzOrVt,rebelShips[count2].getStrength())) {
 						available = true;
 					}
 				}
-				placeShip(i,j,hzOrVt, rebelShips[count2], rebelShips[count2].strength);
+				placeShip(i,j,hzOrVt, rebelShips[count2], rebelShips[count2].getStrength());
 				count2++;
 			}
 		}
 	}
 	
+	/**
+	 * helper method for setEnemyGrid to set the death star Ship
+	 * @param i i coordinate
+	 * @param j j coordinate
+	 */
 	public void deathStar(int i, int j) {
 		enemyGrid[i][j].setStatus(1);
-		enemyGrid[i][j].s = galacticShips[0];
+		enemyGrid[i][j].setShip(galacticShips[0]);
 		enemyGrid[i+1][j].setStatus(1);
-		enemyGrid[i+1][j].s = galacticShips[0];
+		enemyGrid[i+1][j].setShip(galacticShips[0]);
 		enemyGrid[i][j+1].setStatus(1);
-		enemyGrid[i][j+1].s = galacticShips[0];
+		enemyGrid[i][j+1].setShip(galacticShips[0]);
 		enemyGrid[i+1][j+1].setStatus(1);
-		enemyGrid[i+1][j+1].s = galacticShips[0];
+		enemyGrid[i+1][j+1].setShip(galacticShips[0]);
 	}
 	
+	/**
+	 * tests if Cell(s) are available
+	 * @param i i coordinate
+	 * @param j j coordinate
+	 * @param hzOrVt whether or not the Ship is horizontal or vertical
+	 * @param strength the Ships strength
+	 * @return boolean of available or not
+	 */
 	public boolean isAvailable(int i, int j, int hzOrVt, int strength) {
 		int numOccupied = 0;
 		boolean response = true;
@@ -518,25 +537,38 @@ public class View extends JPanel {
 		return response;
 	}
 	
+	/**
+	 * helper method to test a single Cell
+	 * @param c the Cell being test
+	 * @return int of whether or not occupied
+	 */
 	public int testCell(Cell c) {
 		int occupied = 0;
-		if (c.status == 1) {
+		if (c.getStatus() == 1) {
 			occupied = 1;
 		}
 		return occupied;
 	}
 	
+	/**
+	 * places Ship
+	 * @param i i coordinate
+	 * @param j j coordinate
+	 * @param hzOrVt whether or not the Ship is horizontal or vertical
+	 * @param s the Ship
+	 * @param strength the Ship's strength
+	 */
 	public void placeShip(int i, int j, int hzOrVt, Ship s, int strength) {
 		if (hzOrVt == 0) {
 			for (int x=0;x<strength;x++) {
 				enemyGrid[i+x][j].setStatus(1);
-				enemyGrid[i+x][j].s = s;
+				enemyGrid[i+x][j].setShip(s);
 			}
 		}
 		else {
 			for (int x=0;x<strength;x++) {
 				enemyGrid[i][j+x].setStatus(1);
-				enemyGrid[i][j+x].s = s;
+				enemyGrid[i][j+x].setShip(s);
 			}
 		}
 	}
@@ -547,7 +579,7 @@ public class View extends JPanel {
 	private class SplashClickHandler implements ActionListener {
 
 		/**
-		 * This method handles the tasks of setting the ship
+		 * This method handles the tasks of determining the user's side
 		 *
 		 * @param e the action event handled by this method
 		 */
@@ -566,17 +598,20 @@ public class View extends JPanel {
 			gameDifficulty = (selectDiff.getSelectedItem()).toString();
 			changeScreen();
 			add(userShips[count]);
-			shipName.setText(userShips[count].name);
+			shipName.setText(userShips[count].getName());
 		}
 	}
 	
+	/**
+	 * changes the screen
+	 */
 	public void changeScreen() {
 		frame.setContentPane(this);
 		splashSound.interrupt();
 	}
 	
 	/**
-	 * PlaceClickHandler provides the action listener for the go button
+	 * PlaceClickHandler provides the action listener for placing the ship
 	 */
 	private class PlaceClickHandler implements ActionListener {
 
@@ -653,7 +688,7 @@ public class View extends JPanel {
 				placed = (Cell)e.getSource();
 				placed.setBackground(Color.green);
 				placed.setOpaque(true);
-				int strength = userShips[count3].strength;
+				int strength = userShips[count3].getStrength();
 				int a = -1;
 				int b = -1;
 				for (int i=0;i<grid.length;i++) {
@@ -714,224 +749,283 @@ public class View extends JPanel {
 		}
 	}
 	
+	/**
+	 * tests the positive i side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
 	public boolean isDeathStarI(int strength, int x, int y) {
 		int occupied = 0;
 		boolean isOcc = false;
-		if(x+strength>9 || grid[x+strength][y].status == 1){
+		if(x+strength>9 || grid[x+strength][y].getStatus() == 1){
 			return false;
 		}
 		occupied += testCell(grid[x+strength][y]);
-		System.out.println(occupied);
 		
 		if (occupied == 0) {
 			isOcc = true;
 		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isDeathStarNegI(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(x-strength<0 || grid[x-strength][y].status == 1){
-			return false;
-		}
-		occupied += testCell(grid[x-strength][y]);
-		System.out.println(occupied);
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isDeathStarJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(y+strength>9 || grid[x][y+strength].status == 1){
-			return false;
-		}
-		occupied += testCell(grid[x][y+strength]);
-		System.out.println(occupied);
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isDeathStarNegJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(y-strength<0 || grid[x][y-strength].status == 1){
-			return false;
-		}
-		occupied += testCell(grid[x][y-strength]);
-		System.out.println(occupied);
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isDeathStarIJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(x+strength>9 || y+strength>9 || grid[x+strength][y+strength].status == 1){
-			return false;
-		}
-		occupied += testCell(grid[x+strength][y+strength]);
-		System.out.println(occupied);
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isDeathStarNegIJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(x-strength<0 || y+strength>9 || grid[x-strength][y+strength].status == 1){
-			return false;
-		}
-		occupied += testCell(grid[x-strength][y+strength]);
-		System.out.println(occupied);
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isDeathStarINegJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(x+strength>9 || y-strength<0 || grid[x+strength][y-strength].status == 1){
-			return false;
-		}
-		occupied += testCell(grid[x+strength][y-strength]);
-		System.out.println(occupied);
-
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isDeathStarNegINegJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(x-strength<0 || y-strength<0 || grid[x-strength][y-strength].status == 1){
-			return false;
-		}
-		occupied += testCell(grid[x-1][y-1]);
-		System.out.println(occupied);
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isAvailableI(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(x+strength>9 || grid[x+strength][y].status == 1){
-			return false;
-		}
-		for (int i=0; i<strength;i++) {
-			occupied += testCell(grid[x+i][y]);
-			System.out.println(occupied);
-		}
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isAvailableNegI(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(x-strength<0 || grid[x-strength][y].status == 1){
-			return false;
-		}
-		for (int i=0; i<strength;i++) {
-			occupied += testCell(grid[x-i][y]);
-			System.out.println(occupied);
-		}
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isAvailableJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(y+strength>9 || grid[x][y+strength].status == 1){
-			return false;
-		}
-		for (int i=0; i<strength;i++) {
-			occupied += testCell(grid[x][y+i]);
-			System.out.println(occupied);
-		}
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
-		return isOcc;
-	}
-	
-	public boolean isAvailableNegJ(int strength, int x, int y) {
-		int occupied = 0;
-		boolean isOcc = false;
-		if(y-strength<0 || grid[x][y-strength].status == 1){
-			return false;
-		}
-		for (int i=0; i<strength;i++) {
-			occupied += testCell(grid[x][y-i]);
-			System.out.println(occupied);
-		}
-		
-		if (occupied == 0) {
-			isOcc = true;
-		}
-		System.out.println(isOcc);
 		return isOcc;
 	}
 	
 	/**
-	 * PlaceClickHandler2 provides the action listener for the go button
+	 * tests the negative i side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
+	public boolean isDeathStarNegI(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0 || grid[x-strength][y].getStatus() == 1){
+			return false;
+		}
+		occupied += testCell(grid[x-strength][y]);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * tests the positive j side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
+	public boolean isDeathStarJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y+strength>9 || grid[x][y+strength].getStatus() == 1){
+			return false;
+		}
+		occupied += testCell(grid[x][y+strength]);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * tests the negative j side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
+	public boolean isDeathStarNegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y-strength<0 || grid[x][y-strength].getStatus() == 1){
+			return false;
+		}
+		occupied += testCell(grid[x][y-strength]);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * tests the positive i, positive j side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
+	public boolean isDeathStarIJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x+strength>9 || y+strength>9 || grid[x+strength][y+strength].getStatus() == 1){
+			return false;
+		}
+		occupied += testCell(grid[x+strength][y+strength]);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * tests the negative i, positive j side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
+	public boolean isDeathStarNegIJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0 || y+strength>9 || grid[x-strength][y+strength].getStatus() == 1){
+			return false;
+		}
+		occupied += testCell(grid[x-strength][y+strength]);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * tests the positive i, negative j side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
+	public boolean isDeathStarINegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x+strength>9 || y-strength<0 || grid[x+strength][y-strength].getStatus() == 1){
+			return false;
+		}
+		occupied += testCell(grid[x+strength][y-strength]);
+
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * tests the negative i, negative j side for the death star Ship
+	 * @param strength the Ship's strength
+	 * @param x the i coordinate
+	 * @param y the j coordinate
+	 * @return a boolean of whether or not it is available
+	 */
+	public boolean isDeathStarNegINegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0 || y-strength<0 || grid[x-strength][y-strength].getStatus() == 1){
+			return false;
+		}
+		occupied += testCell(grid[x-1][y-1]);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * test positive i availability
+	 * @param strength the Ship's strength
+	 * @param x i coordinate
+	 * @param y j coordinate
+	 * @return whether or not available
+	 */
+	public boolean isAvailableI(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x+strength>9 || grid[x+strength][y].getStatus() == 1){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x+i][y]);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+
+		return isOcc;
+	}
+	
+	/**
+	 * test negative i availability
+	 * @param strength the Ship's strength
+	 * @param x i coordinate
+	 * @param y j coordinate
+	 * @return whether or not available
+	 */
+	public boolean isAvailableNegI(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0 || grid[x-strength][y].getStatus() == 1){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x-i][y]);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+
+		return isOcc;
+	}
+	
+	/**
+	 * test positive j availability
+	 * @param strength the Ship's strength
+	 * @param x i coordinate
+	 * @param y j coordinate
+	 * @return whether or not available
+	 */
+	public boolean isAvailableJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y+strength>9 || grid[x][y+strength].getStatus() == 1){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x][y+i]);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * test negative j availability
+	 * @param strength the Ship's strength
+	 * @param x i coordinate
+	 * @param y j coordinate
+	 * @return whether or not available
+	 */
+	public boolean isAvailableNegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y-strength<0 || grid[x][y-strength].getStatus() == 1){
+			return false;
+		}
+		for (int i=0; i<strength;i++) {
+			occupied += testCell(grid[x][y-i]);
+		}
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		return isOcc;
+	}
+	
+	/**
+	 * PlaceClickHandler2 provides the action listener for placing the ship
 	 */
 	private class PlaceClickHandler2 implements ActionListener {
 
 		/**
 		 * This method handles the tasks of setting the ship
-		 *2
+		 *
 		 * @param e the action event handled by this method
 		 */
 		
 		public void actionPerformed(ActionEvent e) {
 			Cell temp = (Cell)e.getSource();
-			int strength = userShips[count].strength;
-			System.out.println("Strength1 " + strength);
+			int strength = userShips[count].getStrength();
 
 			int a = -1;
 			int b = -1;
@@ -955,40 +1049,32 @@ public class View extends JPanel {
 					}
 				}
 			}
-			
-			System.out.println("Strength2 " + strength);
-			
+						
 			if (c > a) {
-				System.out.println("c>a");
 				for (int g=0;g<strength;g++) {
 					grid[a+g][b].setStatus(1);
-					grid[a+g][b].s = userShips[count];
+					grid[a+g][b].setShip(userShips[count]);
 					grid[a+g][b].setEnabled(false);
-
 				}
 			}
 			else if (c < a) {
-				System.out.println("c<a");
 				for (int g=0;g<strength;g++) {
 					grid[c+g][b].setStatus(1);
-					grid[c+g][b].s = userShips[count];
+					grid[c+g][b].setShip(userShips[count]);
 					grid[c+g][b].setEnabled(false);
 				}
 			}
 			else if (d > b) {
-				System.out.println("d>b");
 				for (int g=0;g<strength;g++) {
 					grid[a][b+g].setStatus(1);
-					grid[a][b+g].s = userShips[count];
+					grid[a][b+g].setShip(userShips[count]);
 					grid[a][b+g].setEnabled(false);
-
 				}
 			}
 			else {
-				System.out.println("d<b");
 				for (int g=0;g<strength;g++) {
 					grid[a][d+g].setStatus(1);
-					grid[a][d+g].s = userShips[count];
+					grid[a][d+g].setShip(userShips[count]);
 					grid[a][d+g].setEnabled(false);
 				}
 			}			
@@ -1050,7 +1136,7 @@ public class View extends JPanel {
 				catch (Exception e2) {
 				}
 				add(userShips[count]);
-				shipName.setText(userShips[count].name);
+				shipName.setText(userShips[count].getName());
 				repaint();
 			}	
 			else {
@@ -1082,20 +1168,19 @@ public class View extends JPanel {
 	}
 	
 	/**
-	 * PlaceClickHandler2 provides the action listener for the go button
+	 * PlaceClickHandler3 provides the action listener for placing the ship
 	 */
 	private class PlaceClickHandler3 implements ActionListener {
 
 		/**
 		 * This method handles the tasks of setting the ship
-		 *2
+		 *
 		 * @param e the action event handled by this method
 		 */
 		
 		public void actionPerformed(ActionEvent e) {
 			Cell temp = (Cell)e.getSource();
-			int strength = userShips[0].strength;
-			System.out.println("StrengthPCH3 " + strength);
+			int strength = userShips[0].getStrength();
 
 			int a = -1;
 			int b = -1;
@@ -1119,55 +1204,49 @@ public class View extends JPanel {
 					}
 				}
 			}
-			
-			System.out.println("Strength2 " + strength);
-			
+						
 			if (c > a && d > b) {
-				System.out.println("c>a && d>b");
 				grid[a+1][b].setStatus(1);
-				grid[a+1][b].s = userShips[0];
+				grid[a+1][b].setShip(userShips[0]);
 				grid[a+1][b].setEnabled(false);
 				grid[a][b+1].setStatus(1);
-				grid[a][b+1].s = userShips[0];
+				grid[a][b+1].setShip(userShips[0]);
 				grid[a][b+1].setEnabled(false);
 				grid[a+1][b+1].setStatus(1);
-				grid[a+1][b+1].s = userShips[0];
+				grid[a+1][b+1].setShip(userShips[0]);
 				grid[a+1][b+1].setEnabled(false);
 			}
 			else if (c > a && d < b) {
-				System.out.println("c<a");
 				grid[a+1][b].setStatus(1);
-				grid[a+1][b].s = userShips[0];
+				grid[a+1][b].setShip(userShips[0]);
 				grid[a+1][b].setEnabled(false);
 				grid[a][b-1].setStatus(1);
-				grid[a][b-1].s = userShips[0];
+				grid[a][b-1].setShip(userShips[0]);
 				grid[a][b-1].setEnabled(false);
 				grid[a+1][b-1].setStatus(1);
-				grid[a+1][b-1].s = userShips[0];
+				grid[a+1][b-1].setShip(userShips[0]);
 				grid[a+1][b-1].setEnabled(false);
 			}
 			else if (c < a && d > b) {
-				System.out.println("d>b");
 				grid[a-1][b].setStatus(1);
-				grid[a-1][b].s = userShips[0];
+				grid[a-1][b].setShip(userShips[0]);
 				grid[a-1][b].setEnabled(false);
 				grid[a][b+1].setStatus(1);
-				grid[a][b+1].s = userShips[0];
+				grid[a][b+1].setShip(userShips[0]);
 				grid[a][b+1].setEnabled(false);
 				grid[a-1][b+1].setStatus(1);
-				grid[a-1][b+1].s = userShips[0];
+				grid[a-1][b+1].setShip(userShips[0]);
 				grid[a-1][b+1].setEnabled(false);
 			}
 			else if (c < a && d < b) {
-				System.out.println("d<b");
 				grid[a-1][b].setStatus(1);
-				grid[a-1][b].s = userShips[0];
+				grid[a-1][b].setShip(userShips[0]);
 				grid[a-1][b].setEnabled(false);
 				grid[a][b-1].setStatus(1);
-				grid[a][b-1].s = userShips[0];
+				grid[a][b-1].setShip(userShips[0]);
 				grid[a][b-1].setEnabled(false);
 				grid[a-1][b-1].setStatus(1);
-				grid[a-1][b-1].s = userShips[0];
+				grid[a-1][b-1].setShip(userShips[0]);
 				grid[a-1][b-1].setEnabled(false);
 			}			
 			
@@ -1268,16 +1347,19 @@ public class View extends JPanel {
 			catch (Exception e2) {
 			}
 			add(userShips[count]);
-			shipName.setText(userShips[count].name);
+			shipName.setText(userShips[count].getName());
 			repaint();
 			greenEmUp();	
 		}
 	}
 	
+	/**
+	 * changes graphical aspects of the users placed ships
+	 */
 	public void greenEmUp() {
 		for (int i=0;i<grid.length;i++) {
 			for (int j=0;j<grid[i].length;j++) {
-				if (grid[i][j].status == 1) {
+				if (grid[i][j].getStatus() == 1) {
 					grid[i][j].setBackground(Color.green);
 					grid[i][j].setOpaque(true);
 					grid[i][j].setBorderPainted(false);
@@ -1287,12 +1369,12 @@ public class View extends JPanel {
 	}
 	
 	/**
-	 * FireClickHandler provides the action listener for the go button
+	 * FireClickHandler provides the action listener for firing on ships
 	 */
 	private class FireClickHandler implements ActionListener {
 
 		/**
-		 * This method handles the tasks of firing at ships
+		 * This method handles the tasks of firing on ships
 		 *
 		 * @param e the action event handled by this method
 		 */
@@ -1356,35 +1438,56 @@ public class View extends JPanel {
 				temp.setOpaque(true);
 				temp.setEnabled(false);
 				temp.setStatus(2);
-				temp.s.strength -= 1;
-				System.out.println(temp.s.name + " " + temp.s.strength);
-				if (temp.s.strength == 0) {
-					sunk(temp.s.name);
+				temp.getShip().setStrength(1);
+				if (temp.getShip().getStrength() == 0) {
+					sunk(temp.getShip().getName());
 				}
 				userHit = 1;
 			}
 		}
 	}
 	
+	/**
+	 * gets userHit
+	 * @return int userHit
+	 */
 	public int getUserHit() {
 		return userHit;
 	}
 	
+	/**
+	 * sets userHit
+	 * @param i int to be set as userHit
+	 */
 	public void setUserHit(int i) {
 		userHit = i;
 	}
 	
+	/**
+	 * gets enemyHit
+	 * @return int enemyHit
+	 */
 	public int getEnemyHit() {
 		return enemyHit;
 	}
 	
+	/**
+	 * sets enemyHit
+	 * @param i int to be set as enemyHit
+	 */
 	public void setEnemyHit(int i) {
 		enemyHit = i;
 	}
 	
+	/**
+	 * method for the user's turn
+	 */
 	public void userTurn() {
 	}
 	
+	/**
+	 * method for enemy's turn
+	 */
 	public void enemyTurn() {
 		if (gameDifficulty.equals("Easy")) {
 			easy();
@@ -1397,16 +1500,18 @@ public class View extends JPanel {
 		}
 	}
 	
+	/**
+	 * easy difficulty
+	 */
 	public void easy() {
 		int a = r.nextInt(10);
 		int b = r.nextInt(10);
 		Cell temp = grid[a][b];
-		while (grid[a][b].status == 2) {
+		while (grid[a][b].getStatus() == 2) {
 			a = r.nextInt(10);
 			b = r.nextInt(10);
 			temp = grid[a][b];
 		}
-		System.out.println("a " + a + "b " + b);
 		if (temp.getStatus() == 0) {
 			temp.setBackground(Color.blue);
 			temp.setOpaque(true);
@@ -1420,15 +1525,18 @@ public class View extends JPanel {
 			temp.setOpaque(true);
 			temp.setEnabled(false);
 			temp.setStatus(2);
-			temp.s.strength -= 1;
-			if (temp.s.strength == 0) {
-				enemySunk(temp.s.name);
+			temp.getShip().setStrength(1);
+			if (temp.getShip().getStrength() == 0) {
+				enemySunk(temp.getShip().getName());
 			}
 			enemyHit = 1;
 			wasHit = 1;
 		}
 	}
 	
+	/**
+	 * medium difficulty
+	 */
 	public void medium() {
 		if (wasHit == 1) {
 			int random = r.nextInt(2);
@@ -1440,31 +1548,24 @@ public class View extends JPanel {
 				for (int y=0;y<grid[x].length;y++) {
 					if (grid[x][y] == cellHit) {
 						if (random == 0) {
-							while (newCell == null || newCell.status == 2) {
-								System.out.println("while 1");
+							while (newCell == null || newCell.getStatus() == 2) {
 								random2 = r.nextInt(6);
 								a = 0 + (int)(Math.random() * ((4 - 0)));
 								b = 0 + (int)(Math.random() * ((4 - 0)));
 								if (random2 == 0) {
-									System.out.println("random 1");
 									while (x+a > 9) {
-										System.out.println("while 2");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									newCell = grid[x+a][y];
 								}
 								else if (random2 == 1){
-									System.out.println("random 2");
 									while (x-a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									newCell = grid[x-a][y];
 								}
 								else if (random2 == 2){
-									System.out.println("random 2");
 									while (x+a > 9) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (y+b > 9) {
@@ -1473,9 +1574,7 @@ public class View extends JPanel {
 									newCell = grid[x+a][y+b];
 								}
 								else if (random == 3) {
-									System.out.println("random 2");
 									while (x-a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (y+b > 9) {
@@ -1484,9 +1583,7 @@ public class View extends JPanel {
 									newCell = grid[x-a][y+b];
 								}
 								else if (random == 4) {
-									System.out.println("random 2");
 									while (x+a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (y-b < 0) {
@@ -1495,9 +1592,7 @@ public class View extends JPanel {
 									newCell = grid[x+a][y-b];
 								}
 								else {
-									System.out.println("random 2");
 									while (x-a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (y-b < 0) {
@@ -1508,31 +1603,24 @@ public class View extends JPanel {
 							}
 						}
 						else {
-							while (newCell == null || newCell.status == 2) {
-								System.out.println("while 1");
+							while (newCell == null || newCell.getStatus() == 2) {
 								random2 = r.nextInt(6);
 								a = 0 + (int)(Math.random() * ((4 - 0)));
 								b = 0 + (int)(Math.random() * ((4 - 0)));
 								if (random2 == 0) {
-									System.out.println("random 1");
 									while (y+a > 9) {
-										System.out.println("while 2");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									newCell = grid[x][y+a];
 								}
 								else if (random2 == 1){
-									System.out.println("random 2");
 									while (y-a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									newCell = grid[x][y-a];
 								}
 								else if (random2 == 2){
-									System.out.println("random 2");
 									while (y+a > 9) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (x+b > 9) {
@@ -1541,9 +1629,7 @@ public class View extends JPanel {
 									newCell = grid[x+b][y+a];
 								}
 								else if (random == 3) {
-									System.out.println("random 2");
 									while (y-a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (x+b > 9) {
@@ -1552,9 +1638,7 @@ public class View extends JPanel {
 									newCell = grid[x+b][y-a];
 								}
 								else if (random == 4) {
-									System.out.println("random 2");
 									while (y+a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (x-b < 0) {
@@ -1563,9 +1647,7 @@ public class View extends JPanel {
 									newCell = grid[x-b][y+a];
 								}
 								else {
-									System.out.println("random 2");
 									while (y-a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((4 - 0)));
 									}
 									while (x-b < 0) {
@@ -1592,9 +1674,9 @@ public class View extends JPanel {
 				newCell.setOpaque(true);
 				newCell.setEnabled(false);
 				newCell.setStatus(2);
-				newCell.s.strength -= 1;
-				if (newCell.s.strength == 0) {
-					enemySunk(newCell.s.name);
+				newCell.getShip().setStrength(1);
+				if (newCell.getShip().getStrength() == 0) {
+					enemySunk(newCell.getShip().getName());
 				}
 				cellHit = newCell;
 				enemyHit = 1;
@@ -1605,12 +1687,11 @@ public class View extends JPanel {
 			int a = r.nextInt(10);
 			int b = r.nextInt(10);
 			Cell temp = grid[a][b];
-			while (grid[a][b].status == 2) {
+			while (grid[a][b].getStatus() == 2) {
 				a = r.nextInt(10);
 				b = r.nextInt(10);
 				temp = grid[a][b];
 			}
-			System.out.println("a " + a + "b " + b);
 			if (temp.getStatus() == 0) {
 				temp.setBackground(Color.blue);
 				temp.setOpaque(true);
@@ -1625,9 +1706,9 @@ public class View extends JPanel {
 				temp.setOpaque(true);
 				temp.setEnabled(false);
 				temp.setStatus(2);
-				temp.s.strength -= 1;
-				if (temp.s.strength == 0) {
-					enemySunk(temp.s.name);
+				temp.getShip().setStrength(1);
+				if (temp.getShip().getStrength() == 0) {
+					enemySunk(temp.getShip().getName());
 				}
 				cellHit = temp;
 				enemyHit = 1;
@@ -1636,6 +1717,9 @@ public class View extends JPanel {
 		}
 	}
 	
+	/**
+	 * hard difficulty
+	 */
 	public void hard() {
 		if (wasHit == 1) {
 			int random = r.nextInt(2);
@@ -1647,31 +1731,24 @@ public class View extends JPanel {
 				for (int y=0;y<grid[x].length;y++) {
 					if (grid[x][y] == cellHit) {
 						if (random == 0) {
-							while (newCell == null || newCell.status == 2) {
-								System.out.println("while 1");
+							while (newCell == null || newCell.getStatus() == 2) {
 								random2 = r.nextInt(6);
 								a = 0 + (int)(Math.random() * ((2 - 0)));
 								b = 0 + (int)(Math.random() * ((2 - 0)));
 								if (random2 == 0) {
-									System.out.println("random 1");
 									while (x+a > 9) {
-										System.out.println("while 2");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									newCell = grid[x+a][y];
 								}
 								else if (random2 == 1){
-									System.out.println("random 2");
 									while (x-a < 0) {
-										System.out.println("while 3");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									newCell = grid[x-a][y];
 								}
 								else if (random2 == 2){
-									System.out.println("random 3");
 									while (x+a > 9) {
-										System.out.println("while 4");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (y+b > 9) {
@@ -1680,9 +1757,7 @@ public class View extends JPanel {
 									newCell = grid[x+a][y+b];
 								}
 								else if (random == 3) {
-									System.out.println("random 4");
 									while (x-a < 0) {
-										System.out.println("while 5");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (y+b > 9) {
@@ -1691,9 +1766,7 @@ public class View extends JPanel {
 									newCell = grid[x-a][y+b];
 								}
 								else if (random == 4) {
-									System.out.println("random 5");
 									while (x+a < 0) {
-										System.out.println("while 6");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (y-b < 0) {
@@ -1702,9 +1775,7 @@ public class View extends JPanel {
 									newCell = grid[x+a][y-b];
 								}
 								else {
-									System.out.println("random 6");
 									while (x-a < 0) {
-										System.out.println("while 7");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (y-b < 0) {
@@ -1715,31 +1786,24 @@ public class View extends JPanel {
 							}
 						}
 						else {
-							while (newCell == null || newCell.status == 2) {
-								System.out.println("while 8");
+							while (newCell == null || newCell.getStatus() == 2) {
 								random2 = r.nextInt(6);
 								a = 0 + (int)(Math.random() * ((2 - 0)));
 								b = 0 + (int)(Math.random() * ((2 - 0)));
 								if (random2 == 0) {
-									System.out.println("random 7");
 									while (y+a > 9) {
-										System.out.println("while 9");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									newCell = grid[x][y+a];
 								}
 								else if (random2 == 1){
-									System.out.println("random 8");
 									while (y-a < 0) {
-										System.out.println("while 10");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									newCell = grid[x][y-a];
 								}
 								else if (random2 == 2){
-									System.out.println("random 9");
 									while (y+a > 9) {
-										System.out.println("while 11");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (x+b > 9) {
@@ -1748,9 +1812,7 @@ public class View extends JPanel {
 									newCell = grid[x+b][y+a];
 								}
 								else if (random == 3) {
-									System.out.println("random 10");
 									while (y-a < 0) {
-										System.out.println("while 12");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (x+b > 9) {
@@ -1759,9 +1821,7 @@ public class View extends JPanel {
 									newCell = grid[x+b][y-a];
 								}
 								else if (random == 4) {
-									System.out.println("random 11");
 									while (y+a < 0) {
-										System.out.println("while 13");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (x-b < 0) {
@@ -1770,9 +1830,7 @@ public class View extends JPanel {
 									newCell = grid[x-b][y+a];
 								}
 								else {
-									System.out.println("random 12");
 									while (y-a < 0) {
-										System.out.println("while 13");
 										a = 0 + (int)(Math.random() * ((2 - 0)));
 									}
 									while (x-b < 0) {
@@ -1799,9 +1857,9 @@ public class View extends JPanel {
 				newCell.setOpaque(true);
 				newCell.setEnabled(false);
 				newCell.setStatus(2);
-				newCell.s.strength -= 1;
-				if (newCell.s.strength == 0) {
-					enemySunk(newCell.s.name);
+				newCell.getShip().setStrength(1);
+				if (newCell.getShip().getStrength() == 0) {
+					enemySunk(newCell.getShip().getName());
 				}
 				cellHit = newCell;
 				enemyHit = 1;
@@ -1812,12 +1870,11 @@ public class View extends JPanel {
 			int a = r.nextInt(10);
 			int b = r.nextInt(10);
 			Cell temp = grid[a][b];
-			while (grid[a][b].status == 2) {
+			while (grid[a][b].getStatus() == 2) {
 				a = r.nextInt(10);
 				b = r.nextInt(10);
 				temp = grid[a][b];
 			}
-			System.out.println("a " + a + "b " + b);
 			if (temp.getStatus() == 0) {
 				temp.setBackground(Color.blue);
 				temp.setOpaque(true);
@@ -1832,9 +1889,9 @@ public class View extends JPanel {
 				temp.setOpaque(true);
 				temp.setEnabled(false);
 				temp.setStatus(2);
-				temp.s.strength -= 1;
-				if (temp.s.strength == 0) {
-					enemySunk(temp.s.name);
+				temp.getShip().setStrength(1);
+				if (temp.getShip().getStrength() == 0) {
+					enemySunk(temp.getShip().getName());
 				}
 				cellHit = temp;
 				enemyHit = 1;
@@ -1843,6 +1900,10 @@ public class View extends JPanel {
 		}
 	}
 	
+	/**
+	 * method for when user sinks a Ship
+	 * @param ship the sunk Ship
+	 */
 	public void sunk(String ship) {
 		messageCenter.setText("You sunk the enemy " + ship + "!");
 		shipsLeft -= 1;
@@ -1852,6 +1913,10 @@ public class View extends JPanel {
 		}
 	}
 	
+	/**
+	 * method for when AI sinks a Ship
+	 * @param ship the sunk Ship
+	 */
 	public void enemySunk(String ship) {
 		messageCenter.setText("The enemy sunk your " + ship + "!");
 		userShipsLeft -= 1;
@@ -1861,10 +1926,18 @@ public class View extends JPanel {
 		}
 	}
 	
+	/**
+	 * determines is the game is over
+	 * @return int determining if game is over
+	 */
 	public int getGameOver() {
 		return gameOver;
 	}
 	
+	/**
+	 * celebrates or chastises user!
+	 * @param s the winner
+	 */
 	public void winner(String s) {
 		if (s.equals("User")) {
 			if (userShips == rebelShips) {

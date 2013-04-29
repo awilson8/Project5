@@ -7,7 +7,7 @@ import javax.swing.*;
  * @version 1.0
 */
 public class Splash extends JPanel {
-	Image splashBackground;
+	private Image splashBackground;
 
 	/**
 	 * Create the panel.
@@ -19,6 +19,9 @@ public class Splash extends JPanel {
 		setSize(1125,750);
 	}
 	
+	/**
+	 * Paints the background
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(splashBackground, 0, 0, 1125, 750, null);

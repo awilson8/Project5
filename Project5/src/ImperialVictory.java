@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * Splash for Project5.
+ * ImperialVictory Splash for Project5.
  * @author Drew Wilson
  * @version 1.
 */
@@ -19,6 +19,9 @@ public class ImperialVictory extends JPanel {
 		setSize(1125,750);
 	}
 	
+	/**
+	 * Paints the background
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(imperialBackground, 0, 0, 1125, 750, null);

@@ -1,13 +1,12 @@
 import java.util.*;
 /**
- * Controller runs the Ships game.
+ * Controller runs the game.
  * 
  * @author Drew Wilson
  * @version 1.0
  */
 public class Controller {
-    Scanner scan = new Scanner(System.in);
-    View cView = new View();
+	private View cView = new View();
     
     /**
      * runProgram runs the program.
@@ -19,12 +18,15 @@ public class Controller {
     	}    	
     }
     
+    /**
+     * game loop
+     */
     public void playGame() {
 		cView.setUserHit(1);
 		cView.setEnemyHit(1);
 		while (cView.getUserHit() == 1) {
 			try {
-				Thread.sleep(250);
+				Thread.sleep(300);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -32,7 +34,7 @@ public class Controller {
 		while (cView.getEnemyHit() == 1) {
 			cView.enemyTurn();
 			try {
-				Thread.sleep(250);
+				Thread.sleep(400);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

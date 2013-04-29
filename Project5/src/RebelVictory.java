@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * Splash for Project5.
+ * RebelVictory Splash for Project5.
  * @author Drew Wilson
  * @version 1.0
 */
@@ -19,6 +19,9 @@ public class RebelVictory extends JPanel {
 		setSize(1125,750);
 	}
 	
+	/**
+	 * Paints the background
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(rebelBackground, 0, 0, 1125, 750, null);
