@@ -6,21 +6,21 @@ import javax.swing.*;
  * @author Drew Wilson
  * @version 1.0
 */
-public class Splash extends JPanel {
-	Image splashBackground;
+public class RebelVictory extends JPanel {
+	Image rebelBackground;
 
 	/**
 	 * Create the panel.
 	 */
-	public Splash() {
+	public RebelVictory() {
 		setLayout(null);
 		
-		splashBackground = new ImageIcon("SplashScreen.png").getImage();
+		rebelBackground = new ImageIcon("RebelVictory.png").getImage();
 		setSize(1125,750);
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(splashBackground, 0, 0, 1125, 750, null);
+		g.drawImage(rebelBackground, 0, 0, 1125, 750, null);
 	}	
 }

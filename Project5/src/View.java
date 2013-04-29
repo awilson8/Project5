@@ -2,12 +2,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.Random;
 import javax.sound.sampled.*;
 import javax.swing.*;
-import sun.audio.*;
 
 /**
  * Gui for Project5.
@@ -17,9 +15,17 @@ import sun.audio.*;
 public class View extends JPanel {
 	int count = 0;
 	int count2 = 0;
+	int count3 = 0;
+	int userHit = 1;
+	int enemyHit = 1;
+	int gameOver = 0;
 	Random r = new Random();
 	private final int ARRAY_MAX_SIZE = 4;
 	Splash splash = new Splash();
+	RebelVictory rebelVictory = new RebelVictory();
+	ImperialVictory imperialVictory = new ImperialVictory();
+	EnemyRebelVictory enemyRebelVictory = new EnemyRebelVictory();
+	EnemyImperialVictory enemyImperialVictory = new EnemyImperialVictory();
 	JFrame frame = new JFrame("Drew Wilson - Project 5");
 	Image background;
 	JLabel shipName = new JLabel ("Ship name");
@@ -51,7 +57,29 @@ public class View extends JPanel {
 	Cell[][] enemyGrid = new Cell[10][10];
 	Ship[] userShips;
 	int shipsLeft = 5;
+	int userShipsLeft = 5;
 	int state = 0;
+	Cell placed;
+	Cell deathStarPlaced;
+	boolean isDeathStarPlaced = false;
+	Cell deathStarPlusI = null;
+	Cell deathStarPlusJ = null;
+	Cell deathStarNegI = null;
+	Cell deathStarNegJ = null;
+	Cell deathStarIJ = null;
+	Cell deathStarNegIJ = null;
+	Cell deathStarINegJ = null;
+	Cell deathStarNegINegJ = null;
+	Cell plusI = null;
+	Cell plusJ = null;
+	Cell negI = null;
+	Cell negJ = null;
+	Ship galacticLogo;
+	Ship rebelLogo;
+	String gameDifficulty;
+    Thread splashSound;
+    AudioInputStream audio;
+    Clip clip;
 
 	/**
 	 * Create the panel.
@@ -361,6 +389,34 @@ public class View extends JPanel {
 		selectDiff.setLocation(500, 480);
 		selectDiff.setSize(120, 30);
 		splash.add(selectDiff);
+		galacticLogo = new Ship(galacticButton);
+		galacticLogo.setSize(200,200);
+		galacticLogo.setLocation(720,120);
+		galacticLogo.setBorderPainted(false);
+		rebelLogo = new Ship(rebelButton);
+		rebelLogo.setSize(200,200);
+		rebelLogo.setLocation(720,120);
+		rebelLogo.setBorderPainted(false);
+		splashSound = new Thread(new Runnable(){
+			public void run(){
+				try {
+		            audio = AudioSystem.getAudioInputStream(new File("SpaceWars.wav"));
+		            clip = AudioSystem.getClip();
+		            clip.open(audio);
+		            clip.start();
+		        }
+		        
+		        catch(UnsupportedAudioFileException uae) {
+		            System.out.println(uae);
+		        }
+		        catch(IOException ioe) {
+		            System.out.println(ioe);
+		        }
+		        catch(LineUnavailableException lua) {
+		            System.out.println(lua);
+		        }
+			}
+		});
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -378,6 +434,7 @@ public class View extends JPanel {
 	    frame.setSize(1125, 750);
 	    frame.setVisible(true);
 	    frame.setLocationRelativeTo(null);
+		splashSound.run();
 	}
 	
 	public void setEnemyGrid() {
@@ -510,7 +567,9 @@ public class View extends JPanel {
 		 * @param e the action event handled by this method
 		 */
 		
-		public void actionPerformed(ActionEvent e) {	
+		public void actionPerformed(ActionEvent e) {
+			clip.stop();
+			splashSound.interrupt();
 			if (e.getSource() == rebel) {
 				userShips = rebelShips;
 			}
@@ -519,8 +578,7 @@ public class View extends JPanel {
 			}
 			setEnemyGrid();
 			
-			String difficulty = (selectDiff.getSelectedItem()).toString();
-			System.out.println(difficulty);
+			gameDifficulty = (selectDiff.getSelectedItem()).toString();
 			changeScreen();
 			add(userShips[count]);
 			shipName.setText(userShips[count].name);
@@ -529,6 +587,7 @@ public class View extends JPanel {
 	
 	public void changeScreen() {
 		frame.setContentPane(this);
+		splashSound.interrupt();
 	}
 	
 	/**
@@ -543,96 +602,266 @@ public class View extends JPanel {
 		 */
 		
 		public void actionPerformed(ActionEvent e) {
-			Cell temp = (Cell)e.getSource();
-			temp.setBackground(Color.green);
-			temp.setOpaque(true);
-			int strength = userShips[count2].strength;
-			int a = -1;
-			int b = -1;
-			for (int i=0;i<grid.length;i++) {
-				for (int j=0;j<grid[i].length;j++) {
-					if (grid[i][j] == temp) {
-						a = i;
-						b = j;
+			if (userShips == galacticShips && isDeathStarPlaced == false) {
+				deathStarPlaced = (Cell)e.getSource();
+				deathStarPlaced.setBackground(Color.green);
+				deathStarPlaced.setOpaque(true);
+				int a = -1;
+				int b = -1;
+				for (int i=0;i<grid.length;i++) {
+					for (int j=0;j<grid[i].length;j++) {
+						grid[i][j].setEnabled(false);
+						if (grid[i][j] == deathStarPlaced) {
+							a = i;
+							b = j;
+						}
 					}
 				}
-			}
-			state = 1;
-			if (state == 1) {
-				if (isAvailableI(strength,a,b)) {
-					grid[a+strength][b].setBackground(Color.green);
-					grid[a+strength][b].setOpaque(true);
-					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
-						grid[a+strength][b].removeActionListener(act);
+				state = 1;
+				if (state == 1) {
+					if (isDeathStarIJ(1, a, b)) {
+						deathStarIJ = grid[a+1][b+1];
+						deathStarIJ.setBackground(Color.green);
+						deathStarIJ.setOpaque(true);
+						deathStarIJ.setEnabled(true);
+						for (ActionListener act : deathStarIJ.getActionListeners()) {
+							deathStarIJ.removeActionListener(act);
+						}
+						deathStarIJ.addActionListener(new PlaceClickHandler3());
 					}
-					grid[a+strength][b].addActionListener(new PlaceClickHandler2());
-				}
-				if (isAvailableJ(strength,a,b)) {
-					grid[a][b+strength].setBackground(Color.green);
-					grid[a][b+strength].setOpaque(true);
-					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
-						grid[a][b+strength].removeActionListener(act);
+					if (isDeathStarNegIJ(1, a, b)) {
+						deathStarNegIJ = grid[a-1][b+1];
+						deathStarNegIJ.setBackground(Color.green);
+						deathStarNegIJ.setOpaque(true);
+						deathStarNegIJ.setEnabled(true);
+						for (ActionListener act : deathStarNegIJ.getActionListeners()) {
+							deathStarNegIJ.removeActionListener(act);
+						}
+						deathStarNegIJ.addActionListener(new PlaceClickHandler3());
 					}
-					grid[a][b+strength].addActionListener(new PlaceClickHandler2());
-				}
-				if (isAvailableNegI(strength,a,b)) {
-					grid[a-strength][b].setBackground(Color.green);
-					grid[a-strength][b].setOpaque(true);
-					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
-						grid[a-strength][b].removeActionListener(act);
+					if (isDeathStarINegJ(1, a, b)) {
+						deathStarINegJ = grid[a+1][b-1];
+						deathStarINegJ.setBackground(Color.green);
+						deathStarINegJ.setOpaque(true);
+						deathStarINegJ.setEnabled(true);
+						for (ActionListener act : deathStarINegJ.getActionListeners()) {
+							deathStarINegJ.removeActionListener(act);
+						}
+						deathStarINegJ.addActionListener(new PlaceClickHandler3());
 					}
-					grid[a-strength][b].addActionListener(new PlaceClickHandler2());
-				}
-				if (isAvailableNegJ(strength,a,b)) {
-					grid[a][b-strength].setBackground(Color.green);
-					grid[a][b-strength].setOpaque(true);
-					for (ActionListener act : grid[a+strength][b].getActionListeners()) {
-						grid[a][b-strength].removeActionListener(act);
+					if (isDeathStarNegINegJ(1, a, b)) {
+						deathStarNegINegJ = grid[a-1][b-1];
+						deathStarNegINegJ.setBackground(Color.green);
+						deathStarNegINegJ.setOpaque(true);
+						deathStarNegINegJ.setEnabled(true);
+						for (ActionListener act : deathStarNegINegJ.getActionListeners()) {
+							deathStarNegINegJ.removeActionListener(act);
+						}
+						deathStarNegINegJ.addActionListener(new PlaceClickHandler3());
 					}
-					grid[a][b-strength].addActionListener(new PlaceClickHandler2());
 				}
-			}
-			/**messageCenter.setText("");
-			boolean isVertical = true;
-			if ((selectHZ.getSelectedItem()).toString().equals("Horizontal"))  {
-				isVertical = false;
-			}
-
-			String letter = placeA.getText().substring(0, 1);
-			int number = ((place1.getText().charAt(0))-48);
-			if (!(letter.matches("[a-jA-J]")) && (number >=0 && number<=9) ) {
-				messageCenter.setText("Invalid Cooridinates");
+				state = 0;
+				count3++;
+				isDeathStarPlaced = true;
 			}
 			else {
-				System.out.println(isVertical + " " + letter + " " + number);
-				userShips[count].letter = letter;
-				userShips[count].number = number;
-				userShips[count].isVertical = isVertical;
-				remove(userShips[count]);
-				count++;
-				if (count <= ARRAY_MAX_SIZE) {
-					add(userShips[count]);
-					shipName.setText(userShips[count].name);
-					repaint();
-				}	
-				else {
-					remove(userShips[count-1]);
-					remove(place);
-					remove(placeA);
-					remove(place1);
-					remove(selectHZ);
-					remove(shipName);
-					//add side logo
-					repaint();
+				placed = (Cell)e.getSource();
+				placed.setBackground(Color.green);
+				placed.setOpaque(true);
+				int strength = userShips[count3].strength;
+				int a = -1;
+				int b = -1;
+				for (int i=0;i<grid.length;i++) {
+					for (int j=0;j<grid[i].length;j++) {
+						grid[i][j].setEnabled(false);
+						if (grid[i][j] == placed) {
+							a = i;
+							b = j;
+						}
+					}
 				}
-			}*/
+				state = 1;
+				if (state == 1) {
+					if (isAvailableI((strength-1),a,b)) {
+						plusI = grid[a+(strength-1)][b];
+						plusI.setBackground(Color.green);
+						plusI.setOpaque(true);
+						plusI.setEnabled(true);
+						for (ActionListener act : plusI.getActionListeners()) {
+							plusI.removeActionListener(act);
+						}
+						plusI.addActionListener(new PlaceClickHandler2());
+					}
+					if (isAvailableJ((strength-1),a,b)) {
+						plusJ = grid[a][b+(strength-1)];
+						plusJ.setBackground(Color.green);
+						plusJ.setOpaque(true);
+						plusJ.setEnabled(true);
+						for (ActionListener act : plusJ.getActionListeners()) {
+							plusJ.removeActionListener(act);
+						}
+						plusJ.addActionListener(new PlaceClickHandler2());
+					}
+					if (isAvailableNegI((strength-1),a,b)) {
+						negI = grid[a-(strength-1)][b];
+						negI.setBackground(Color.green);
+						negI.setOpaque(true);
+						negI.setEnabled(true);
+						for (ActionListener act : negI.getActionListeners()) {
+							negI.removeActionListener(act);
+						}
+						negI.addActionListener(new PlaceClickHandler2());
+					}
+					if (isAvailableNegJ((strength-1),a,b)) {
+						negJ = grid[a][b-(strength-1)];
+						negJ.setBackground(Color.green);
+						negJ.setOpaque(true);
+						negJ.setEnabled(true);
+						for (ActionListener act : negJ.getActionListeners()) {
+							negJ.removeActionListener(act);
+						}	
+						negJ.addActionListener(new PlaceClickHandler2());
+					}
+				}
+				state = 0;
+				count3++;
+			}
 		}
+	}
+	
+	public boolean isDeathStarI(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x+strength>9 || grid[x+strength][y].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x+strength][y]);
+		System.out.println(occupied);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isDeathStarNegI(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0 || grid[x-strength][y].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x-strength][y]);
+		System.out.println(occupied);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isDeathStarJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y+strength>9 || grid[x][y+strength].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x][y+strength]);
+		System.out.println(occupied);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isDeathStarNegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(y-strength<0 || grid[x][y-strength].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x][y-strength]);
+		System.out.println(occupied);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isDeathStarIJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x+strength>9 || y+strength>9 || grid[x+strength][y+strength].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x+strength][y+strength]);
+		System.out.println(occupied);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isDeathStarNegIJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0 || y+strength>9 || grid[x-strength][y+strength].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x-strength][y+strength]);
+		System.out.println(occupied);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isDeathStarINegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x+strength>9 || y-strength<0 || grid[x+strength][y-strength].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x+strength][y-strength]);
+		System.out.println(occupied);
+
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
+	}
+	
+	public boolean isDeathStarNegINegJ(int strength, int x, int y) {
+		int occupied = 0;
+		boolean isOcc = false;
+		if(x-strength<0 || y-strength<0 || grid[x-strength][y-strength].status == 1){
+			return false;
+		}
+		occupied += testCell(grid[x-1][y-1]);
+		System.out.println(occupied);
+		
+		if (occupied == 0) {
+			isOcc = true;
+		}
+		System.out.println(isOcc);
+		return isOcc;
 	}
 	
 	public boolean isAvailableI(int strength, int x, int y) {
 		int occupied = 0;
 		boolean isOcc = false;
-		if(x+strength>9){
+		if(x+strength>9 || grid[x+strength][y].status == 1){
 			return false;
 		}
 		for (int i=0; i<strength;i++) {
@@ -643,6 +872,7 @@ public class View extends JPanel {
 		if (occupied == 0) {
 			isOcc = true;
 		}
+
 		System.out.println(isOcc);
 		return isOcc;
 	}
@@ -650,7 +880,7 @@ public class View extends JPanel {
 	public boolean isAvailableNegI(int strength, int x, int y) {
 		int occupied = 0;
 		boolean isOcc = false;
-		if(x-strength<0){
+		if(x-strength<0 || grid[x-strength][y].status == 1){
 			return false;
 		}
 		for (int i=0; i<strength;i++) {
@@ -669,11 +899,11 @@ public class View extends JPanel {
 	public boolean isAvailableJ(int strength, int x, int y) {
 		int occupied = 0;
 		boolean isOcc = false;
-		if(y+strength>9){
+		if(y+strength>9 || grid[x][y+strength].status == 1){
 			return false;
 		}
 		for (int i=0; i<strength;i++) {
-			occupied += testCell(grid[x][y+1]);
+			occupied += testCell(grid[x][y+i]);
 			System.out.println(occupied);
 		}
 		
@@ -687,11 +917,11 @@ public class View extends JPanel {
 	public boolean isAvailableNegJ(int strength, int x, int y) {
 		int occupied = 0;
 		boolean isOcc = false;
-		if(y-strength<0){
+		if(y-strength<0 || grid[x][y-strength].status == 1){
 			return false;
 		}
 		for (int i=0; i<strength;i++) {
-			occupied += testCell(grid[x][y-1]);
+			occupied += testCell(grid[x][y-i]);
 			System.out.println(occupied);
 		}
 		
@@ -709,12 +939,364 @@ public class View extends JPanel {
 
 		/**
 		 * This method handles the tasks of setting the ship
-		 *
+		 *2
 		 * @param e the action event handled by this method
 		 */
 		
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("You Made It!");
+			Cell temp = (Cell)e.getSource();
+			int strength = userShips[count].strength;
+			System.out.println("Strength1 " + strength);
+
+			int a = -1;
+			int b = -1;
+			int c = -1;
+			int d = -1;
+			for (int i=0;i<grid.length;i++) {
+				for (int j=0;j<grid[i].length;j++) {
+					grid[i][j].setEnabled(true);
+					if (grid[i][j] == placed) {
+						a = i;
+						b = j;
+					}
+				}
+			}
+			
+			for (int v=0;v<grid.length;v++) {
+				for (int w=0;w<grid[v].length;w++) {
+					if (grid[v][w] == temp) {
+						c = v;
+						d = w;
+					}
+				}
+			}
+			
+			System.out.println("Strength2 " + strength);
+			
+			if (c > a) {
+				System.out.println("c>a");
+				for (int g=0;g<strength;g++) {
+					grid[a+g][b].setStatus(1);
+					grid[a+g][b].s = userShips[count];
+					grid[a+g][b].setEnabled(false);
+
+				}
+			}
+			else if (c < a) {
+				System.out.println("c<a");
+				for (int g=0;g<strength;g++) {
+					grid[c+g][b].setStatus(1);
+					grid[c+g][b].s = userShips[count];
+					grid[c+g][b].setEnabled(false);
+				}
+			}
+			else if (d > b) {
+				System.out.println("d>b");
+				for (int g=0;g<strength;g++) {
+					grid[a][b+g].setStatus(1);
+					grid[a][b+g].s = userShips[count];
+					grid[a][b+g].setEnabled(false);
+
+				}
+			}
+			else {
+				System.out.println("d<b");
+				for (int g=0;g<strength;g++) {
+					grid[a][d+g].setStatus(1);
+					grid[a][d+g].s = userShips[count];
+					grid[a][d+g].setEnabled(false);
+				}
+			}			
+			
+			placed.setBackground(null);
+			placed.setOpaque(false);
+			placed.setBorderPainted(false);
+			
+			if (plusI != null) {
+				plusI.setBackground(null);
+				plusI.setOpaque(false);
+				plusI.setBorderPainted(false);
+			}
+			if (plusJ != null) {
+				plusJ.setBackground(null);
+				plusJ.setOpaque(false);
+				plusJ.setBorderPainted(false);
+			}
+			if (negI != null) {
+				negI.setBackground(null);
+				negI.setOpaque(false);
+				negI.setBorderPainted(false);
+			}
+			if (negJ != null) {
+				negJ.setBackground(null);
+				negJ.setOpaque(false);
+				negJ.setBorderPainted(false);
+			}
+
+			plusI = null;
+			plusJ = null;
+			negI = null;
+			negJ = null;
+			remove(userShips[count]);
+			count++;
+			try {
+				for (ActionListener act : plusI.getActionListeners()) {
+					plusI.removeActionListener(act);
+				}
+				for (ActionListener act : plusJ.getActionListeners()) {
+					plusJ.removeActionListener(act);
+				}
+				for (ActionListener act : negI.getActionListeners()) {
+					negI.removeActionListener(act);
+				}
+				for (ActionListener act : negJ.getActionListeners()) {
+					negJ.removeActionListener(act);
+				}
+			}
+			catch (Exception e1) {
+			}
+			if (count <= ARRAY_MAX_SIZE) {
+				try {
+					plusI.addActionListener(new PlaceClickHandler());
+					plusJ.addActionListener(new PlaceClickHandler());
+					negI.addActionListener(new PlaceClickHandler());
+					negJ.addActionListener(new PlaceClickHandler());
+				}
+				catch (Exception e2) {
+				}
+				add(userShips[count]);
+				shipName.setText(userShips[count].name);
+				repaint();
+			}	
+			else {
+				remove(userShips[count-1]);
+				remove(place);
+				remove(placeA);
+				remove(place1);
+				remove(selectHZ);
+				remove(shipName);
+				if (userShips == rebelShips) {
+					add(rebelLogo);
+				}
+				else {
+					add(galacticLogo);
+				}
+				repaint();
+				for (int x=0;x<grid.length;x++) {
+					for (int y=0;y<grid[x].length;y++) {
+						for (ActionListener act : grid[x][y].getActionListeners()) {
+							grid[x][y].removeActionListener(act);
+						}
+						grid[x][y].setEnabled(false);
+					}
+				}
+			}
+			greenEmUp();
+		}
+	}
+	
+	/**
+	 * PlaceClickHandler2 provides the action listener for the go button
+	 */
+	private class PlaceClickHandler3 implements ActionListener {
+
+		/**
+		 * This method handles the tasks of setting the ship
+		 *2
+		 * @param e the action event handled by this method
+		 */
+		
+		public void actionPerformed(ActionEvent e) {
+			Cell temp = (Cell)e.getSource();
+			int strength = userShips[0].strength;
+			System.out.println("StrengthPCH3 " + strength);
+
+			int a = -1;
+			int b = -1;
+			int c = -1;
+			int d = -1;
+			for (int i=0;i<grid.length;i++) {
+				for (int j=0;j<grid[i].length;j++) {
+					grid[i][j].setEnabled(true);
+					if (grid[i][j] == deathStarPlaced) {
+						a = i;
+						b = j;
+					}
+				}
+			}
+			
+			for (int v=0;v<grid.length;v++) {
+				for (int w=0;w<grid[v].length;w++) {
+					if (grid[v][w] == temp) {
+						c = v;
+						d = w;
+					}
+				}
+			}
+			
+			System.out.println("Strength2 " + strength);
+			
+			if (c > a && d > b) {
+				System.out.println("c>a && d>b");
+				grid[a+1][b].setStatus(1);
+				grid[a+1][b].s = userShips[0];
+				grid[a+1][b].setEnabled(false);
+				grid[a][b+1].setStatus(1);
+				grid[a][b+1].s = userShips[0];
+				grid[a][b+1].setEnabled(false);
+				grid[a+1][b+1].setStatus(1);
+				grid[a+1][b+1].s = userShips[0];
+				grid[a+1][b+1].setEnabled(false);
+			}
+			else if (c > a && d < b) {
+				System.out.println("c<a");
+				grid[a+1][b].setStatus(1);
+				grid[a+1][b].s = userShips[0];
+				grid[a+1][b].setEnabled(false);
+				grid[a][b-1].setStatus(1);
+				grid[a][b-1].s = userShips[0];
+				grid[a][b-1].setEnabled(false);
+				grid[a+1][b-1].setStatus(1);
+				grid[a+1][b-1].s = userShips[0];
+				grid[a+1][b-1].setEnabled(false);
+			}
+			else if (c < a && d > b) {
+				System.out.println("d>b");
+				grid[a-1][b].setStatus(1);
+				grid[a-1][b].s = userShips[0];
+				grid[a-1][b].setEnabled(false);
+				grid[a][b+1].setStatus(1);
+				grid[a][b+1].s = userShips[0];
+				grid[a][b+1].setEnabled(false);
+				grid[a-1][b+1].setStatus(1);
+				grid[a-1][b+1].s = userShips[0];
+				grid[a-1][b+1].setEnabled(false);
+			}
+			else if (c < a && d < b) {
+				System.out.println("d<b");
+				grid[a-1][b].setStatus(1);
+				grid[a-1][b].s = userShips[0];
+				grid[a-1][b].setEnabled(false);
+				grid[a][b-1].setStatus(1);
+				grid[a][b-1].s = userShips[0];
+				grid[a][b-1].setEnabled(false);
+				grid[a-1][b-1].setStatus(1);
+				grid[a-1][b-1].s = userShips[0];
+				grid[a-1][b-1].setEnabled(false);
+			}			
+			
+			deathStarPlaced.setBackground(null);
+			deathStarPlaced.setOpaque(false);
+			deathStarPlaced.setBorderPainted(false);
+			deathStarPlaced.setStatus(1);
+			
+			if (deathStarPlusI != null) {
+				deathStarPlusI.setBackground(null);
+				deathStarPlusI.setOpaque(false);
+				deathStarPlusI.setBorderPainted(false);
+			}
+			if (deathStarPlusJ != null) {
+				deathStarPlusJ.setBackground(null);
+				deathStarPlusJ.setOpaque(false);
+				deathStarPlusJ.setBorderPainted(false);
+			}
+			if (deathStarNegI != null) {
+				deathStarNegI.setBackground(null);
+				deathStarNegI.setOpaque(false);
+				deathStarNegI.setBorderPainted(false);
+			}
+			if (deathStarNegJ != null) {
+				deathStarNegJ.setBackground(null);
+				deathStarNegJ.setOpaque(false);
+				deathStarNegJ.setBorderPainted(false);
+			}
+			if (deathStarIJ != null) {
+				deathStarIJ.setBackground(null);
+				deathStarIJ.setOpaque(false);
+				deathStarIJ.setBorderPainted(false);
+			}
+			if (deathStarNegIJ != null) {
+				deathStarNegIJ.setBackground(null);
+				deathStarNegIJ.setOpaque(false);
+				deathStarNegIJ.setBorderPainted(false);
+			}
+			if (deathStarINegJ != null) {
+				deathStarINegJ.setBackground(null);
+				deathStarINegJ.setOpaque(false);
+				deathStarINegJ.setBorderPainted(false);
+			}
+			if (deathStarNegINegJ != null) {
+				deathStarNegINegJ.setBackground(null);
+				deathStarNegINegJ.setOpaque(false);
+				deathStarNegINegJ.setBorderPainted(false);
+			}
+
+			deathStarPlusI = null;
+			deathStarPlusJ = null;
+			deathStarNegI = null;
+			deathStarNegJ = null;
+			deathStarIJ = null;
+			deathStarNegIJ = null;
+			deathStarINegJ = null;
+			deathStarNegINegJ = null;
+			remove(userShips[0]);
+			count++;
+			try {
+				for (ActionListener act : deathStarPlusI.getActionListeners()) {
+					deathStarPlusI.removeActionListener(act);
+				}
+				for (ActionListener act : deathStarPlusJ.getActionListeners()) {
+					deathStarPlusJ.removeActionListener(act);
+				}
+				for (ActionListener act : deathStarNegI.getActionListeners()) {
+					deathStarNegI.removeActionListener(act);
+				}
+				for (ActionListener act : deathStarNegJ.getActionListeners()) {
+					deathStarNegJ.removeActionListener(act);
+				}
+				for (ActionListener act : deathStarIJ.getActionListeners()) {
+					deathStarIJ.removeActionListener(act);
+				}
+				for (ActionListener act : deathStarNegIJ.getActionListeners()) {
+					deathStarNegIJ.removeActionListener(act);
+				}
+				for (ActionListener act : deathStarINegJ.getActionListeners()) {
+					deathStarINegJ.removeActionListener(act);
+				}
+				for (ActionListener act : deathStarNegINegJ.getActionListeners()) {
+					deathStarNegINegJ.removeActionListener(act);
+				}
+			}
+			catch (Exception e1) {
+			}
+			try {
+				deathStarPlusI.addActionListener(new PlaceClickHandler());
+				deathStarPlusJ.addActionListener(new PlaceClickHandler());
+				deathStarNegI.addActionListener(new PlaceClickHandler());
+				deathStarNegJ.addActionListener(new PlaceClickHandler());
+				deathStarIJ.addActionListener(new PlaceClickHandler());
+				deathStarNegIJ.addActionListener(new PlaceClickHandler());
+				deathStarINegJ.addActionListener(new PlaceClickHandler());
+				deathStarNegINegJ.addActionListener(new PlaceClickHandler());
+			}
+			catch (Exception e2) {
+			}
+			add(userShips[count]);
+			shipName.setText(userShips[count].name);
+			repaint();
+			greenEmUp();	
+		}
+	}
+	
+	public void greenEmUp() {
+		for (int i=0;i<grid.length;i++) {
+			for (int j=0;j<grid[i].length;j++) {
+				if (grid[i][j].status == 1) {
+					grid[i][j].setBackground(Color.green);
+					grid[i][j].setOpaque(true);
+					grid[i][j].setBorderPainted(false);
+				}
+			}
 		}
 	}
 	
@@ -730,90 +1312,60 @@ public class View extends JPanel {
 		 */
 		
 		public void actionPerformed(ActionEvent e) {
+			Thread blaster = new Thread(new Runnable(){
+				public void run(){
+					try {
+			            AudioInputStream audio = AudioSystem.getAudioInputStream(new File("Blaster.wav"));
+			            Clip clip = AudioSystem.getClip();
+			            clip.open(audio);
+			            clip.start();
+			        }
+			        
+			        catch(UnsupportedAudioFileException uae) {
+			            System.out.println(uae);
+			        }
+			        catch(IOException ioe) {
+			            System.out.println(ioe);
+			        }
+			        catch(LineUnavailableException lua) {
+			            System.out.println(lua);
+			        }
+				}
+			});
+			blaster.run();
 			Cell temp = (Cell)e.getSource();
 			if (temp.getStatus() == 0) {
 				temp.setBackground(Color.blue);
 				temp.setOpaque(true);
 				temp.setEnabled(false);
-				/**Thread blueBlaster = new Thread(new Runnable(){
-					public void run(){
-						try {
-							Clip clip = AudioSystem.getClip();
-							File blue = new File("BlasterMiss.wav");
-				            AudioInputStream inputStream = AudioSystem.getAudioInputStream(blue);
-				            clip.open(inputStream);
-				            clip.start(); 
-				        } 
-						catch (Exception e) {
-				            System.err.println(e.getMessage());
-				        }
-						
-						
-						//File blue = new File("BlasterMiss.wav");
-						//AudioInputStream audioInputStream = null;
-				        //try { 
-				         //   audioInputStream = AudioSystem.getAudioInputStream(blue);
-				        //} 
-				        //catch (Exception e) { 
-				         //   e.printStackTrace();
-				        //    return;
-				        //}
-				        
-				        //AudioFormat format = audioInputStream.getFormat();
-				        //SourceDataLine auline = null;
-				        //DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-				 
-				        //try { 
-				         //   auline = (SourceDataLine) AudioSystem.getLine(info);
-				         //   auline.open(format);
-				        //} 
-				        //catch (LineUnavailableException e) { 
-				         //   e.printStackTrace();
-				         //   return;
-				        //} 
-				        //catch (Exception e) { 
-				          //  e.printStackTrace();
-				           // return;
-				        //}
-				        
-				        //auline.start();
+				temp.setStatus(2);
 
-						//try {
-							//System.out.println("I'm running!");
-							//File blue = new File("BlasterMiss.wav");
-							//String st = blue.getAbsolutePath();
-							//InputStream in = new FileInputStream(st);
-							//AudioStream as = new AudioStream(in);
-							//Clip sound = (Clip)AudioSystem.getLine(new Line.Info(Clip.class));
-							//sound.open(AudioSystem.getAudioInputStream(blue));
-							
-					    //}
-						//catch (Exception e) {
-					        //System.err.println(e.getMessage());
-					    //}
-						//try {
-							//File blue = new File("BlasterMiss.wav");
-						    //AudioInputStream stream;
-						    //AudioFormat format;
-						    //DataLine.Info info;
-						    //Clip clip;
-
-						    //stream = AudioSystem.getAudioInputStream(blue);
-						    //format = stream.getFormat();
-						    //info = new DataLine.Info(Clip.class, format);
-						    //clip = (Clip) AudioSystem.getLine(info);
-						    //clip.open(stream);
-						    //clip.start();
-						//}
-						//catch (Exception e) {
-						    //System.out.println(e.getMessage();
-						//}
-					}
-				});
-				blueBlaster.start();
-				*/
+				userHit = 0;
 			}
 			else if (temp.getStatus() == 1) {
+				if (!(blaster.isAlive())) {
+					Thread explosion = new Thread(new Runnable(){
+						public void run(){
+							try {
+					            AudioInputStream audio = AudioSystem.getAudioInputStream(new File("Explosion.wav"));
+					            Clip clip = AudioSystem.getClip();
+					            clip.open(audio);
+					            clip.start();
+					        }
+					        
+					        catch(UnsupportedAudioFileException uae) {
+					            System.out.println(uae);
+					        }
+					        catch(IOException ioe) {
+					            System.out.println(ioe);
+					        }
+					        catch(LineUnavailableException lua) {
+					            System.out.println(lua);
+					        }
+						}
+					});
+					explosion.start();
+				}
 				temp.setBackground(Color.red);
 				temp.setOpaque(true);
 				temp.setEnabled(false);
@@ -823,19 +1375,118 @@ public class View extends JPanel {
 				if (temp.s.strength == 0) {
 					sunk(temp.s.name);
 				}
+				userHit = 1;
 			}
 		}
+	}
+	
+	public int getUserHit() {
+		return userHit;
+	}
+	
+	public void setUserHit(int i) {
+		userHit = i;
+	}
+	
+	public int getEnemyHit() {
+		return enemyHit;
+	}
+	
+	public void setEnemyHit(int i) {
+		enemyHit = i;
+	}
+	
+	public void userTurn() {
+	}
+	
+	public void enemyTurn() {
+		if (gameDifficulty.equals("Easy")) {
+			easy();
+		}
+		else if (gameDifficulty.equals("Medium")) {
+			medium();
+		}
+		else {
+			hard();
+		}
+	}
+	
+	public void easy() {
+		int a = r.nextInt(10);
+		int b = r.nextInt(10);
+		Cell temp = grid[a][b];
+		while (grid[a][b].status == 2) {
+			a = r.nextInt(10);
+			b = r.nextInt(10);
+			temp = grid[a][b];
+		}
+		System.out.println("a " + a + "b " + b);
+		if (temp.getStatus() == 0) {
+			temp.setBackground(Color.blue);
+			temp.setOpaque(true);
+			temp.setEnabled(false);
+			temp.setStatus(2);
+			enemyHit = 0;
+		}
+		else if (temp.getStatus() == 1) {
+			temp.setBackground(Color.red);
+			temp.setOpaque(true);
+			temp.setEnabled(false);
+			temp.setStatus(2);
+			temp.s.strength -= 1;
+			if (temp.s.strength == 0) {
+				enemySunk(temp.s.name);
+			}
+			enemyHit = 1;
+		}
+	}
+	
+	public void medium() {
+		
+	}
+	
+	public void hard() {
+		
 	}
 	
 	public void sunk(String ship) {
 		messageCenter.setText("You sunk the enemy " + ship + "!");
 		shipsLeft -= 1;
 		if (shipsLeft == 0) {
-			winner();
+			gameOver = 1;
+			winner("User");
 		}
 	}
 	
-	public void winner() {
-		messageCenter.setText(messageCenter.getText() + "\nYou Won!");
+	public void enemySunk(String ship) {
+		messageCenter.setText("The enemy sunk your " + ship + "!");
+		userShipsLeft -= 1;
+		if (userShipsLeft == 0) {
+			gameOver = 1;
+			winner("Computer");
+		}
+	}
+	
+	public int getGameOver() {
+		return gameOver;
+	}
+	
+	public void winner(String s) {
+		if (s.equals("User")) {
+			if (userShips == rebelShips) {
+				frame.setContentPane(rebelVictory);
+			}
+			else {
+				frame.setContentPane(imperialVictory);
+			}
+		}
+		else {
+			if (userShips == rebelShips) {
+				frame.setContentPane(enemyImperialVictory);
+			}
+			else {
+				frame.setContentPane(enemyRebelVictory);
+			}
+		}
 	}
 }

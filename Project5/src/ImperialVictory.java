@@ -4,23 +4,23 @@ import javax.swing.*;
 /**
  * Splash for Project5.
  * @author Drew Wilson
- * @version 1.0
+ * @version 1.
 */
-public class Splash extends JPanel {
-	Image splashBackground;
+public class ImperialVictory extends JPanel {
+	Image imperialBackground;
 
 	/**
 	 * Create the panel.
 	 */
-	public Splash() {
+	public ImperialVictory() {
 		setLayout(null);
 		
-		splashBackground = new ImageIcon("SplashScreen.png").getImage();
+		imperialBackground = new ImageIcon("ImperialVictory.png").getImage();
 		setSize(1125,750);
 	}
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(splashBackground, 0, 0, 1125, 750, null);
+		g.drawImage(imperialBackground, 0, 0, 1125, 750, null);
 	}	
 }

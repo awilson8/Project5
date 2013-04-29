@@ -32,6 +32,10 @@ public class Ship extends JButton {
 		ySize = 0;
 	}
 	
+	public Ship(ImageIcon s){
+		super(s);
+	}
+	
 	public Ship(String _name, int _strength, String _letter, int _number,
 			boolean _isVertical, int _xSize, int _ySize) {
 		name = _name;
