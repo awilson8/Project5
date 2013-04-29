@@ -19,6 +19,7 @@ public class View extends JPanel {
 	int userHit = 1;
 	int enemyHit = 1;
 	int gameOver = 0;
+	int wasHit = 0;
 	Random r = new Random();
 	private final int ARRAY_MAX_SIZE = 4;
 	Splash splash = new Splash();
@@ -29,14 +30,9 @@ public class View extends JPanel {
 	JFrame frame = new JFrame("Drew Wilson - Project 5");
 	Image background;
 	JLabel shipName = new JLabel ("Ship name");
-	JTextField placeA = new JTextField("Ex: A");
-	JTextField place1 = new JTextField("Ex: 1");
 	private JTextArea messageCenter = new JTextArea("");
 	JButton rebel = new JButton();
 	JButton galactic = new JButton();
-	JButton place = new JButton ("Place");
-	String[] isVT = {"Vertical", "Horizontal"};
-	JComboBox selectHZ = new JComboBox(isVT);
 	String[] difficulty = {"Easy", "Medium", "Hard"};
 	JComboBox selectDiff = new JComboBox(difficulty);
 	Ship[] rebelShips = new Ship[5];
@@ -59,6 +55,7 @@ public class View extends JPanel {
 	int shipsLeft = 5;
 	int userShipsLeft = 5;
 	int state = 0;
+	Cell cellHit;
 	Cell placed;
 	Cell deathStarPlaced;
 	boolean isDeathStarPlaced = false;
@@ -92,6 +89,7 @@ public class View extends JPanel {
             	enemyGrid[i][j] = new Cell();
             	enemyGrid[i][j].setSize(35,29);
             	enemyGrid[i][j].addActionListener(new FireClickHandler());
+            	enemyGrid[i][j].setEnabled(false);
             	add(enemyGrid[i][j]);
             }
         }
@@ -314,22 +312,9 @@ public class View extends JPanel {
 		shipName.setOpaque(true);
 		shipName.setHorizontalAlignment(SwingConstants.CENTER);
 		add(shipName);
-		placeA.setSize(50,20);
-		placeA.setLocation(585,190);
-		add(placeA);
-		place1.setSize(50,20);
-		place1.setLocation(640,190);
-		add(place1);
-		selectHZ.setLocation(580, 225);
-		selectHZ.setSize(120, 20);
-		add(selectHZ);
-		place.setSize(70,20);
-		place.setLocation(605,265);
-		add(place);
-		place.addActionListener(new PlaceClickHandler());
 		messageCenter.setSize(300,160);
 		messageCenter.setLocation(155,530);
-		messageCenter.setFont(new Font("Times", Font.BOLD, 22));
+		messageCenter.setFont(new Font("Times", Font.BOLD, 38));
 		messageCenter.setEditable(false);
 		messageCenter.setLineWrap(true);
 		messageCenter.setWrapStyleWord(true);
@@ -1070,10 +1055,6 @@ public class View extends JPanel {
 			}	
 			else {
 				remove(userShips[count-1]);
-				remove(place);
-				remove(placeA);
-				remove(place1);
-				remove(selectHZ);
 				remove(shipName);
 				if (userShips == rebelShips) {
 					add(rebelLogo);
@@ -1088,6 +1069,11 @@ public class View extends JPanel {
 							grid[x][y].removeActionListener(act);
 						}
 						grid[x][y].setEnabled(false);
+					}
+				}
+				for (int m=0;m<enemyGrid.length;m++) {
+					for (int n=0;n<enemyGrid[m].length;n++) {
+						enemyGrid[m][n].setEnabled(true);
 					}
 				}
 			}
@@ -1427,6 +1413,7 @@ public class View extends JPanel {
 			temp.setEnabled(false);
 			temp.setStatus(2);
 			enemyHit = 0;
+			wasHit = 0;
 		}
 		else if (temp.getStatus() == 1) {
 			temp.setBackground(Color.red);
@@ -1438,15 +1425,422 @@ public class View extends JPanel {
 				enemySunk(temp.s.name);
 			}
 			enemyHit = 1;
+			wasHit = 1;
 		}
 	}
 	
 	public void medium() {
-		
+		if (wasHit == 1) {
+			int random = r.nextInt(2);
+			int random2 = r.nextInt(6);
+			int a = 0 + (int)(Math.random() * ((4 - 0)));
+			int b = 0 + (int)(Math.random() * ((4 - 0)));
+			Cell newCell = null;
+			for (int x=0;x<grid.length;x++) {
+				for (int y=0;y<grid[x].length;y++) {
+					if (grid[x][y] == cellHit) {
+						if (random == 0) {
+							while (newCell == null || newCell.status == 2) {
+								System.out.println("while 1");
+								random2 = r.nextInt(6);
+								a = 0 + (int)(Math.random() * ((4 - 0)));
+								b = 0 + (int)(Math.random() * ((4 - 0)));
+								if (random2 == 0) {
+									System.out.println("random 1");
+									while (x+a > 9) {
+										System.out.println("while 2");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x+a][y];
+								}
+								else if (random2 == 1){
+									System.out.println("random 2");
+									while (x-a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x-a][y];
+								}
+								else if (random2 == 2){
+									System.out.println("random 2");
+									while (x+a > 9) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (y+b > 9) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x+a][y+b];
+								}
+								else if (random == 3) {
+									System.out.println("random 2");
+									while (x-a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (y+b > 9) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x-a][y+b];
+								}
+								else if (random == 4) {
+									System.out.println("random 2");
+									while (x+a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (y-b < 0) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x+a][y-b];
+								}
+								else {
+									System.out.println("random 2");
+									while (x-a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (y-b < 0) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x-a][y-b];
+								}
+							}
+						}
+						else {
+							while (newCell == null || newCell.status == 2) {
+								System.out.println("while 1");
+								random2 = r.nextInt(6);
+								a = 0 + (int)(Math.random() * ((4 - 0)));
+								b = 0 + (int)(Math.random() * ((4 - 0)));
+								if (random2 == 0) {
+									System.out.println("random 1");
+									while (y+a > 9) {
+										System.out.println("while 2");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x][y+a];
+								}
+								else if (random2 == 1){
+									System.out.println("random 2");
+									while (y-a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x][y-a];
+								}
+								else if (random2 == 2){
+									System.out.println("random 2");
+									while (y+a > 9) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (x+b > 9) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x+b][y+a];
+								}
+								else if (random == 3) {
+									System.out.println("random 2");
+									while (y-a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (x+b > 9) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x+b][y-a];
+								}
+								else if (random == 4) {
+									System.out.println("random 2");
+									while (y+a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (x-b < 0) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x-b][y+a];
+								}
+								else {
+									System.out.println("random 2");
+									while (y-a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									while (x-b < 0) {
+										b = 0 + (int)(Math.random() * ((4 - 0)));
+									}
+									newCell = grid[x-b][y-a];
+								}
+							}
+						}
+					}
+				}
+			}
+			if (newCell.getStatus() == 0) {
+				newCell.setBackground(Color.blue);
+				newCell.setOpaque(true);
+				newCell.setEnabled(false);
+				newCell.setStatus(2);
+				cellHit = null;
+				enemyHit = 0;
+				wasHit = 0;
+			}
+			else if (newCell.getStatus() == 1) {
+				newCell.setBackground(Color.red);
+				newCell.setOpaque(true);
+				newCell.setEnabled(false);
+				newCell.setStatus(2);
+				newCell.s.strength -= 1;
+				if (newCell.s.strength == 0) {
+					enemySunk(newCell.s.name);
+				}
+				cellHit = newCell;
+				enemyHit = 1;
+				wasHit = 1;
+			}
+		}
+		else {
+			int a = r.nextInt(10);
+			int b = r.nextInt(10);
+			Cell temp = grid[a][b];
+			while (grid[a][b].status == 2) {
+				a = r.nextInt(10);
+				b = r.nextInt(10);
+				temp = grid[a][b];
+			}
+			System.out.println("a " + a + "b " + b);
+			if (temp.getStatus() == 0) {
+				temp.setBackground(Color.blue);
+				temp.setOpaque(true);
+				temp.setEnabled(false);
+				temp.setStatus(2);
+				cellHit = null;
+				enemyHit = 0;
+				wasHit = 0;
+			}
+			else if (temp.getStatus() == 1) {
+				temp.setBackground(Color.red);
+				temp.setOpaque(true);
+				temp.setEnabled(false);
+				temp.setStatus(2);
+				temp.s.strength -= 1;
+				if (temp.s.strength == 0) {
+					enemySunk(temp.s.name);
+				}
+				cellHit = temp;
+				enemyHit = 1;
+				wasHit = 1;
+			}
+		}
 	}
 	
 	public void hard() {
-		
+		if (wasHit == 1) {
+			int random = r.nextInt(2);
+			int random2 = r.nextInt(6);
+			int a = 0 + (int)(Math.random() * ((2 - 0)));
+			int b = 0 + (int)(Math.random() * ((2 - 0)));
+			Cell newCell = null;
+			for (int x=0;x<grid.length;x++) {
+				for (int y=0;y<grid[x].length;y++) {
+					if (grid[x][y] == cellHit) {
+						if (random == 0) {
+							while (newCell == null || newCell.status == 2) {
+								System.out.println("while 1");
+								random2 = r.nextInt(6);
+								a = 0 + (int)(Math.random() * ((2 - 0)));
+								b = 0 + (int)(Math.random() * ((2 - 0)));
+								if (random2 == 0) {
+									System.out.println("random 1");
+									while (x+a > 9) {
+										System.out.println("while 2");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x+a][y];
+								}
+								else if (random2 == 1){
+									System.out.println("random 2");
+									while (x-a < 0) {
+										System.out.println("while 3");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x-a][y];
+								}
+								else if (random2 == 2){
+									System.out.println("random 3");
+									while (x+a > 9) {
+										System.out.println("while 4");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (y+b > 9) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x+a][y+b];
+								}
+								else if (random == 3) {
+									System.out.println("random 4");
+									while (x-a < 0) {
+										System.out.println("while 5");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (y+b > 9) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x-a][y+b];
+								}
+								else if (random == 4) {
+									System.out.println("random 5");
+									while (x+a < 0) {
+										System.out.println("while 6");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (y-b < 0) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x+a][y-b];
+								}
+								else {
+									System.out.println("random 6");
+									while (x-a < 0) {
+										System.out.println("while 7");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (y-b < 0) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x-a][y-b];
+								}
+							}
+						}
+						else {
+							while (newCell == null || newCell.status == 2) {
+								System.out.println("while 8");
+								random2 = r.nextInt(6);
+								a = 0 + (int)(Math.random() * ((2 - 0)));
+								b = 0 + (int)(Math.random() * ((2 - 0)));
+								if (random2 == 0) {
+									System.out.println("random 7");
+									while (y+a > 9) {
+										System.out.println("while 9");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x][y+a];
+								}
+								else if (random2 == 1){
+									System.out.println("random 8");
+									while (y-a < 0) {
+										System.out.println("while 10");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x][y-a];
+								}
+								else if (random2 == 2){
+									System.out.println("random 9");
+									while (y+a > 9) {
+										System.out.println("while 11");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (x+b > 9) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x+b][y+a];
+								}
+								else if (random == 3) {
+									System.out.println("random 10");
+									while (y-a < 0) {
+										System.out.println("while 12");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (x+b > 9) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x+b][y-a];
+								}
+								else if (random == 4) {
+									System.out.println("random 11");
+									while (y+a < 0) {
+										System.out.println("while 13");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (x-b < 0) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x-b][y+a];
+								}
+								else {
+									System.out.println("random 12");
+									while (y-a < 0) {
+										System.out.println("while 13");
+										a = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									while (x-b < 0) {
+										b = 0 + (int)(Math.random() * ((2 - 0)));
+									}
+									newCell = grid[x-b][y-a];
+								}
+							}
+						}
+					}
+				}
+			}
+			if (newCell.getStatus() == 0) {
+				newCell.setBackground(Color.blue);
+				newCell.setOpaque(true);
+				newCell.setEnabled(false);
+				newCell.setStatus(2);
+				cellHit = null;
+				enemyHit = 0;
+				wasHit = 0;
+			}
+			else if (newCell.getStatus() == 1) {
+				newCell.setBackground(Color.red);
+				newCell.setOpaque(true);
+				newCell.setEnabled(false);
+				newCell.setStatus(2);
+				newCell.s.strength -= 1;
+				if (newCell.s.strength == 0) {
+					enemySunk(newCell.s.name);
+				}
+				cellHit = newCell;
+				enemyHit = 1;
+				wasHit = 1;
+			}
+		}
+		else {
+			int a = r.nextInt(10);
+			int b = r.nextInt(10);
+			Cell temp = grid[a][b];
+			while (grid[a][b].status == 2) {
+				a = r.nextInt(10);
+				b = r.nextInt(10);
+				temp = grid[a][b];
+			}
+			System.out.println("a " + a + "b " + b);
+			if (temp.getStatus() == 0) {
+				temp.setBackground(Color.blue);
+				temp.setOpaque(true);
+				temp.setEnabled(false);
+				temp.setStatus(2);
+				cellHit = null;
+				enemyHit = 0;
+				wasHit = 0;
+			}
+			else if (temp.getStatus() == 1) {
+				temp.setBackground(Color.red);
+				temp.setOpaque(true);
+				temp.setEnabled(false);
+				temp.setStatus(2);
+				temp.s.strength -= 1;
+				if (temp.s.strength == 0) {
+					enemySunk(temp.s.name);
+				}
+				cellHit = temp;
+				enemyHit = 1;
+				wasHit = 1;
+			}
+		}
 	}
 	
 	public void sunk(String ship) {
@@ -1475,17 +1869,100 @@ public class View extends JPanel {
 		if (s.equals("User")) {
 			if (userShips == rebelShips) {
 				frame.setContentPane(rebelVictory);
+				Thread rebelVic = new Thread(new Runnable(){
+					public void run(){
+						try {
+				            AudioInputStream audio = AudioSystem.getAudioInputStream(new File("CantinaSong.wav"));
+				            Clip clip = AudioSystem.getClip();
+				            clip.open(audio);
+				            clip.start();
+				        }
+				        
+				        catch(UnsupportedAudioFileException uae) {
+				            System.out.println(uae);
+				        }
+				        catch(IOException ioe) {
+				            System.out.println(ioe);
+				        }
+				        catch(LineUnavailableException lua) {
+				            System.out.println(lua);
+				        }
+					}
+				});
+				rebelVic.start();
 			}
 			else {
 				frame.setContentPane(imperialVictory);
+				Thread imperialVic = new Thread(new Runnable(){
+					public void run(){
+						try {
+				            AudioInputStream audio = AudioSystem.getAudioInputStream(new File("ImperialMarch.wav"));
+				            Clip clip = AudioSystem.getClip();
+				            clip.open(audio);
+				            clip.start();
+				        }
+				        
+				        catch(UnsupportedAudioFileException uae) {
+				            System.out.println(uae);
+				        }
+				        catch(IOException ioe) {
+				            System.out.println(ioe);
+				        }
+				        catch(LineUnavailableException lua) {
+				            System.out.println(lua);
+				        }
+					}
+				});
+				imperialVic.start();
 			}
 		}
-		else {
+		else if (s.equals("Computer")) {
 			if (userShips == rebelShips) {
 				frame.setContentPane(enemyImperialVictory);
-			}
+				Thread rebelLoss = new Thread(new Runnable(){
+					public void run(){
+						try {
+				            AudioInputStream audio = AudioSystem.getAudioInputStream(new File("ImperialMarch.wav"));
+				            Clip clip = AudioSystem.getClip();
+				            clip.open(audio);
+				            clip.start();
+				        }
+				        
+				        catch(UnsupportedAudioFileException uae) {
+				            System.out.println(uae);
+				        }
+				        catch(IOException ioe) {
+				            System.out.println(ioe);
+				        }
+				        catch(LineUnavailableException lua) {
+				            System.out.println(lua);
+				        }
+					}
+				});
+				rebelLoss.start();			}
 			else {
 				frame.setContentPane(enemyRebelVictory);
+				Thread imperialLoss = new Thread(new Runnable(){
+					public void run(){
+						try {
+				            AudioInputStream audio = AudioSystem.getAudioInputStream(new File("CantinaSong.wav"));
+				            Clip clip = AudioSystem.getClip();
+				            clip.open(audio);
+				            clip.start();
+				        }
+				        
+				        catch(UnsupportedAudioFileException uae) {
+				            System.out.println(uae);
+				        }
+				        catch(IOException ioe) {
+				            System.out.println(ioe);
+				        }
+				        catch(LineUnavailableException lua) {
+				            System.out.println(lua);
+				        }
+					}
+				});
+				imperialLoss.start();
 			}
 		}
 	}
